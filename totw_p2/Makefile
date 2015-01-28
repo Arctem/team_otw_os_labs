@@ -5,3 +5,7 @@ shell: shell.c mystrings
 
 mystrings: mystrings.c mystrings.h
 	gcc -g -Wall mystrings.c -c
+
+clean:
+	rm *~
+	rm *.o

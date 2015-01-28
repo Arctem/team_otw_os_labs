@@ -1,20 +1,17 @@
-/*********************************************************************
+/*****************************************************
+ * Filename: shell.c
  *
- *               filename: myshell.c
+ * Description: This program implements a simple CLI
+ * similar to bash.
  *
- *               description: implements a basic shell that can run
- *                            external programs
- *
- *               author: White, Russell
- *
- *               class: CSE 222
- *               instructor: Zheng
- *               assignment: Project 3
- *
- *               assigned: March 25
- *               due: April 1
- *
- *********************************************************************/
+ * Team: Omega Tiger Woods
+ * Authors: Andrew Baker and Russell White
+ * Class: CSE 325
+ * Instructor: Zheng
+ * Assignment: Lab Project #1
+ * Assigned: January 29, 2015
+ * Due: February 11, 2015
+ *****************************************************/
 
 #include <stdio.h>
 #include <unistd.h>

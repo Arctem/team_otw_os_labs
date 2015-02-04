@@ -48,7 +48,7 @@ int main(void) {
     }
 
     /* Check for exit. */
-    if(strncmp(in, "exit", 4) == 0) {
+    if((strncmp(in, "exit", 4) == 0) || (strncmp(in, "quit", 4) == 0)) {
       should_run = 0;
       free(in);
       continue;

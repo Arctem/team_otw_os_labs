@@ -37,7 +37,7 @@ int main(void) {
 
   while(should_run) {
     prompt = getcwd(NULL, 0);
-    strcat(prompt, "$");
+    strcat(prompt, "$ ");
     
     in = get_input(prompt);
     free(prompt);

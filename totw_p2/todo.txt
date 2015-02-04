@@ -1,0 +1,4 @@
+Add semicolon support.
+Add option to pass a file as an argument to run that file.
+Rewrite input so Ctrl+d works properly.
+

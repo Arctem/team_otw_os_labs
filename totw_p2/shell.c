@@ -36,6 +36,10 @@ int main(int argc, char *argv[]) {
 
   if(argc > 1) {
     file = fopen(argv[1], "r");
+    if(file == 0) {
+      fprintf(stderr, "Could not open %s.\n", argv[1]);
+      return -1;
+    }
   }
 
   while(should_run) {

@@ -1,4 +1,5 @@
-Add semicolon support.
+Add semicolon support (run separate commands in their own threads and
+    pause until all are done).
 Add option to pass a file as an argument to run that file.
 Rewrite input so Ctrl+d works properly.
 

@@ -14,59 +14,56 @@
  *****************************************************/
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <ctype.h>
 #include <string.h>
 #include <sys/wait.h>
-#include "mystrings.h"
-
-#define MAX_LINE 80 /* The maximum length command */
 
 void trim(char *str);
+char* get_string();
+char* fget_input(FILE* fp); //Gets next line from a file.
 
 int main(void) {
-  int arg_size = MAX_LINE / 2 + 1;
-  char *args[arg_size]; /* command line arguments */
+  char *args[80];
   int should_run = 1; /* flag to determine when to exit */
   char *in = NULL;
   int i = 0;
   int status = 0;
   pid_t pid = 0;
-  int nowait = 0;
   char *prompt = "totw> ";
+  FILE *file = stdin;
 
   while(should_run) {
-    in = get_input(prompt);
+    //in = get_input(prompt);
+    if(file == stdin) {
+      fprintf(stdout, "%s", prompt);
+    }
+    in = fget_input(file);
+
+    if(in == NULL) {
+      should_run = 0;
+      continue;
+    }
         
     trim(in);
-    
-    nowait = in[strlen(in) - 1] == '&';
-    /* Trim the & */
-    if(nowait) {
-      in[strlen(in) - 1] = '\0';
-      trim(in);
-    }
 
     /* Check for exit. */
-    if((strncmp(in, "exit", 4) == 0) || (strncmp(in, "quit", 4) == 0)) {
+    if((strncmp(in, "exit", 4) == 0)) {
       should_run = 0;
       free(in);
       continue;
     }
       
-    
     /* Parse args */
     args[0] = strtok(in, " ");
     
     for(i = 1; (args[i] = strtok(NULL, " ")) != NULL; i++)
       ;
-    //if(args[0] == NULL)
-    //args[0] = "";
 
     if((pid = fork()) != 0) {
-      if(!nowait)
-	if(wait(&status) != pid)
-	  ;
+      if(wait(&status) != pid)
+	;
     } else {
       execvp(args[0], args);
       exit(0);
@@ -84,6 +81,9 @@ int main(void) {
 
 /* Removes leading and trailing spaces. */
 void trim(char *str) {
+  if(str == NULL)
+    return;
+  
   char *start = str;
   while(isspace(*start))
     start++;
@@ -97,4 +97,46 @@ void trim(char *str) {
     *end = '\0';
     end--;
   }
+}
+
+//Returns a pointer to a new string consisting of a null terminator.
+char* get_string() {
+  char* str = malloc(1);
+  if(!str) {
+    fprintf(stderr, "malloc failed to allocate memory\n");
+    exit(-1);
+  }
+  str[0] = '\0';
+  return str;
+}
+
+char* fget_input(FILE *fp) {
+  char* str = get_string();   //String to return.
+  char input = 0; //Stores user input character by character.
+  int length = 1; //Size of one to start: just '\0'
+    
+  do {
+    input = fgetc(fp);
+        
+    //End the loop if user ends the input.
+    if(input == '\n' || input == '\0')
+      break;
+        
+    if(input == EOF) {
+      free(str);
+      return NULL;
+    }
+            
+    str = realloc(str, ++length); //Increases size by 1.
+    if (!str) {
+      fprintf(stderr, "realloc failed to allocate memory\n");
+      exit(-1);
+    }
+        
+    str[length - 2] = input; //Set second to last character to the new input.
+  } while(1);
+    
+  str[length - 1] = '\0';  //Set the last character to be a null terminator.
+    
+  return str;
 }

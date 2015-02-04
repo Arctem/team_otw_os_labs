@@ -8,7 +8,7 @@
  * Authors: Andrew Baker and Russell White
  * Class: CSE 325
  * Instructor: Zheng
- * Assignment: Lab Project #1
+ * Assignment: Lab Project #2
  * Assigned: January 29, 2015
  * Due: February 11, 2015
  *****************************************************/
@@ -29,6 +29,7 @@ int main(int argc, char *argv[]) {
   int should_run = 1; /* flag to determine when to exit */
   char *in = NULL;
   int i = 0;
+  int j = 0;
   int status = 0;
   pid_t pid = 0;
   char *prompt = "totw> ";
@@ -44,6 +45,10 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "Too many arguments.\n");
     return -1;
   }
+
+  int arguments = 0; //Number of arguments we have
+  int next_arg = 0; //Which argument we start at next
+  char *short_list[arg_size]; //In the event we have semicolons, this keeps a short list of it
 
   while(should_run) {
     //in = get_input(prompt);
@@ -76,6 +81,27 @@ int main(int argc, char *argv[]) {
       if(wait(&status) != pid)
 	;
     } else {
+      //Check if there is a semicolon in the arguments, before executing the arguments
+      //If so, we want to execute the arguments after the semicolon separately
+
+      //How many arguments are there?
+      while(args[arguments] != NULL) {
+	arguments++;
+      }
+
+      //Now we can find where a semicolon is
+      for(i = 0; i < arguments; i++){
+	if(strcmp(args[i], ";") == 0){
+	  //Hey we found a semicolon
+	  /*
+	  short_list[next_arg] = strtok(in, " ");
+	  for(j = next_arg + 1; ((j < semi_location) && (short_list[j] = strtok(NULL, " ")) != NULL); j++)
+	    ;
+	  execvp(short_list[0], short_list); //Execute command up to the semi colon
+	  next_arg = semi_location + 1;//Update next command
+	  */
+	}
+      }
       execvp(args[0], args);
       exit(0);
     }

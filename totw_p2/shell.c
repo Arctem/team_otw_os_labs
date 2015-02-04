@@ -34,12 +34,15 @@ int main(int argc, char *argv[]) {
   char *prompt = "totw> ";
   FILE *file = stdin;
 
-  if(argc > 1) {
+  if(argc == 2) {
     file = fopen(argv[1], "r");
     if(file == 0) {
       fprintf(stderr, "Could not open %s.\n", argv[1]);
       return -1;
     }
+  } else if(argc > 2) {
+    fprintf(stderr, "Too many arguments.\n");
+    return -1;
   }
 
   while(should_run) {

@@ -24,7 +24,7 @@ void trim(char *str);
 char* get_string();
 char* fget_input(FILE* fp); //Gets next line from a file.
 
-int main(void) {
+int main(int argc, char *argv[]) {
   char *args[80];
   int should_run = 1; /* flag to determine when to exit */
   char *in = NULL;
@@ -33,6 +33,10 @@ int main(void) {
   pid_t pid = 0;
   char *prompt = "totw> ";
   FILE *file = stdin;
+
+  if(argc > 1) {
+    file = fopen(argv[1], "r");
+  }
 
   while(should_run) {
     //in = get_input(prompt);
@@ -76,6 +80,8 @@ int main(void) {
      */
     free(in);
   }
+
+  fclose(file);
   exit(0);
 }
 

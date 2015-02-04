@@ -33,15 +33,11 @@ int main(void) {
   int status = 0;
   pid_t pid = 0;
   int nowait = 0;
-  char *prompt = NULL;
+  char *prompt = "totw> ";
 
   while(should_run) {
-    prompt = getcwd(NULL, 0);
-    strcat(prompt, "$ ");
-    
     in = get_input(prompt);
-    free(prompt);
-    
+        
     trim(in);
     
     nowait = in[strlen(in) - 1] == '&';

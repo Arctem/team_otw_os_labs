@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
 
   int arguments = 0; //Number of arguments we have
   int next_arg = 0; //Which argument we start at next
-  char *short_list[arg_size]; //In the event we have semicolons, this keeps a short list of it
+  char *short_list[80]; //In the event we have semicolons, this keeps a short list of it
 
   while(should_run) {
     //in = get_input(prompt);
@@ -93,13 +93,18 @@ int main(int argc, char *argv[]) {
       for(i = 0; i < arguments; i++){
 	if(strcmp(args[i], ";") == 0){
 	  //Hey we found a semicolon
-	  /*
-	  short_list[next_arg] = strtok(in, " ");
-	  for(j = next_arg + 1; ((j < semi_location) && (short_list[j] = strtok(NULL, " ")) != NULL); j++)
-	    ;
-	  execvp(short_list[0], short_list); //Execute command up to the semi colon
-	  next_arg = semi_location + 1;//Update next command
-	  */
+	  //Everything from next_arg to i - 1 is a (hopefully) valid command
+	  //Store it all into short list
+	  int k = 0;
+	  for(j = next_arg; j < i; j++) {
+	    short_list[k] = args[j];
+	    k++;
+	  }
+	  short_list[k] = NULL;
+	  execvp(short_list[0], short_list);
+
+	  //Set the next argument counter
+	  next_arg = i + 1;
 	}
       }
       execvp(args[0], args);

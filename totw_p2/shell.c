@@ -20,6 +20,9 @@
 #include <string.h>
 #include <sys/wait.h>
 
+//For the threads
+#include <pthread.h>
+
 void trim(char *str);
 char* get_string();
 char* fget_input(FILE* fp); //Gets next line from a file.
@@ -101,8 +104,10 @@ int main(int argc, char *argv[]) {
 	    k++;
 	  }
 	  short_list[k] = NULL;
-	  execvp(short_list[0], short_list);
-
+	  //Probably create a thread here, so that we can use execvp for the short_list
+	  //Concurrency!
+	  execvp(short_list[0], short_list); //Definitely thread before here
+	  
 	  //Set the next argument counter
 	  next_arg = i + 1;
 	}

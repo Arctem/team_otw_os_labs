@@ -50,6 +50,7 @@ int main(int argc, char *argv[]) {
   }
 
   int arguments = 0; //Number of arguments we have
+  int semis = 0; //Number of semicolons we have
   int next_arg = 0; //Which argument we start at next
   char *short_list[80]; //In the event we have semicolons, this keeps a short list of it
 
@@ -96,6 +97,8 @@ int main(int argc, char *argv[]) {
       for(i = 0; i < arguments; i++){
 	if(strcmp(args[i], ";") == 0){
 	  //Hey we found a semicolon
+	  semis++;
+	  
 	  //Everything from next_arg to i - 1 is a (hopefully) valid command
 	  //Store it all into short list
 	  int k = 0;
@@ -104,16 +107,37 @@ int main(int argc, char *argv[]) {
 	    k++;
 	  }
 	  short_list[k] = NULL;
-	  //Probably create a thread here, so that we can use execvp for the short_list
-	  //Concurrency!
-	  execvp(short_list[0], short_list); //Definitely thread before here
+	  //Let's use a fork for concurrency
+	  pid_t cmd = fork();
+	  if(cmd >= 0) {
+	    if(cmd == 0){
+	      execvp(short_list[0], short_list);
+	      exit(0);
+	    }
+	  }
+	  else {
+	    perror("Forking failed.\n");
+	  }
 	  
 	  //Set the next argument counter
 	  next_arg = i + 1;
+	  //printf("i:%d\n", i);
 	}
       }
-      execvp(args[0], args);
-      exit(0);
+      if(semis == 0) {
+	execvp(args[0], args);
+	exit(0);
+      } else {
+	//Account for the last argument
+	int k = 0;
+	for(j = next_arg; j < arguments; j++) {
+	  short_list[k] = args[j];
+	  k++;
+	}
+	short_list[k] = NULL;
+	execvp(short_list[0], short_list);
+	exit(0);
+      }
     }
     /**
      *After reading user input, the steps are:

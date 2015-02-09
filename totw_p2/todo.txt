@@ -1,3 +1,1 @@
-Add semicolon support (run separate commands in their own threads and
-    pause until all are done).
 Add error output if a command does not exist.

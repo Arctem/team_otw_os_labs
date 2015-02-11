@@ -25,24 +25,21 @@
 void trim(char *str);
 char* get_string();
 char* fget_input(FILE* fp); /* Gets next line from a file. */
-
+int run_cmd(char *cmd);
 int is_error(int err); /* Prints out error message, changes error back to 0 */
 
 int main(int argc, char *argv[]) {
-  char *args[80];
   int should_run = 1; /* flag to determine when to exit */
   char *in = NULL;
+  char *next_cmd = NULL;
   int i = 0;
-  int j = 0;
   int status = 0;
-  pid_t pid = 0;
   char *prompt = "totw> ";
   FILE *file = stdin;
+  char **commands = NULL;
+  int cmd_count = 0;
+  int *pids = NULL;
 
-  int arguments = 0; /* Number of arguments we have */
-  int semis = 0; /* Number of semicolons we have */
-  int next_arg = 0; /* Which argument we start at next */
-  char *short_list[80]; /* In the event we have semicolons, this keeps a short list of it */
   int error = 0; /* The value execvp returns if invalid command */
 
   if(argc == 2) {
@@ -69,8 +66,6 @@ int main(int argc, char *argv[]) {
       continue;
     }
 
-    trim(in);
-
     /* Check for exit. */
     if((strncmp(in, "exit", 4) == 0) || (strncmp(in, "quit", 4) == 0)) {
       should_run = 0;
@@ -78,7 +73,37 @@ int main(int argc, char *argv[]) {
       continue;
     }
 
-    /* Parse args */
+
+    /* Split into multiple commands by semicolons */
+    cmd_count = 0;
+    next_cmd = strtok(in, ";");
+
+    while(next_cmd != NULL) {
+      cmd_count++;
+      commands = realloc(commands, cmd_count * sizeof(char*));
+      commands[cmd_count - 1] = next_cmd;
+      next_cmd = strtok(NULL, ";");
+    }
+
+    pids = malloc(cmd_count * sizeof(int));
+
+    for(i = 0; i < cmd_count; i++) {
+      pids[i] = run_cmd(commands[i]);
+    }
+
+    
+    free(in);
+  }
+
+  free(commands);
+
+  fclose(file);
+  exit(0);
+}
+
+/* Runs a command and returns the PID of the new process. */
+int run_cmd(char *cmd) {
+  /* Parse args */
     args[0] = strtok(in, " ");
     
     for(i = 1; (args[i] = strtok(NULL, " ")) != NULL; i++)
@@ -131,7 +156,8 @@ int main(int argc, char *argv[]) {
       if(semis == 0) {
 	error = execvp(args[0], args);
 	error = is_error(error);
-	exit(0);
+
+	should_run = 0;
       } else {
 	/* Account for the last argument */
 	int k = 0;
@@ -142,7 +168,8 @@ int main(int argc, char *argv[]) {
 	short_list[k] = NULL;
 	error = execvp(short_list[0], short_list);
 	error = is_error(error);
-	exit(0);
+
+	should_run = 0;
       }
     }
     /**
@@ -151,31 +178,6 @@ int main(int argc, char *argv[]) {
      *(2) the child process will invoke execvp()
      *(3) if command include &, parent will invoke wait()
      */
-    free(in);
-  }
-
-  fclose(file);
-  exit(0);
-}
-
-/* Removes leading and trailing spaces. */
-void trim(char *str) {
-  if(str == NULL)
-    return;
-  
-  char *start = str;
-  while(isspace(*start))
-    start++;
-
-  if(start != str)
-    strcpy(str, start);
-
-  char *end = (str + strlen(str)) - 1;
-
-  while(isspace(*end)) {
-    *end = '\0';
-    end--;
-  }
 }
 
 //Returns a pointer to a new string consisting of a null terminator.

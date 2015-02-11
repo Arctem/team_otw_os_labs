@@ -28,7 +28,7 @@ void trim(char *str);
 char* get_string();
 char* fget_input(FILE* fp); //Gets next line from a file.
 
-int isError(int err); //Prints out error message, changes error back to 0
+int is_error(int err); //Prints out error message, changes error back to 0
 
 int main(int argc, char *argv[]) {
   char *args[80];
@@ -118,7 +118,7 @@ int main(int argc, char *argv[]) {
 	  if(cmd >= 0) {
 	    if(cmd == 0){
 	      error = execvp(short_list[0], short_list);
-	      error = isError(error);
+	      error = is_error(error);
 	      exit(0);
 	    }
 	  }
@@ -133,7 +133,7 @@ int main(int argc, char *argv[]) {
       }
       if(semis == 0) {
 	error = execvp(args[0], args);
-	error = isError(error);
+	error = is_error(error);
 	exit(0);
       } else {
 	//Account for the last argument
@@ -144,7 +144,7 @@ int main(int argc, char *argv[]) {
 	}
 	short_list[k] = NULL;
 	error = execvp(short_list[0], short_list);
-	error = isError(error);
+	error = is_error(error);
 	exit(0);
       }
     }
@@ -223,9 +223,9 @@ char* fget_input(FILE *fp) {
   return str;
 }
 
-int isError(int err) {
+int is_error(int err) {
   if(err < 0) {
-    perror("Invalid command.");
+    perror("Invalid command");
   }
   return (0);
 }

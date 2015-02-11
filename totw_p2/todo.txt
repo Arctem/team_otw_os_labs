@@ -1,1 +1,0 @@
-Add error output if a command does not exist.

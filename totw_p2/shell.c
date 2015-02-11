@@ -19,6 +19,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <sys/wait.h>
+#include <readline/readline.h>
 
 //For the threads
 #include <pthread.h>
@@ -57,9 +58,11 @@ int main(int argc, char *argv[]) {
   while(should_run) {
     //in = get_input(prompt);
     if(file == stdin) {
-      fprintf(stdout, "%s", prompt);
+      in = readline(prompt);
     }
-    in = fget_input(file);
+    else
+      in = fget_input(file);
+    
 
     if(in == NULL) {
       should_run = 0;

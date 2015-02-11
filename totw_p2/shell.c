@@ -129,12 +129,6 @@ int run_cmd(char *cmd) {
     perror("Forking failed");
   }
 
-  /**
-  *After reading user input, the steps are:
-  *(1) fork a child process using fork()
-  *(2) the child process will invoke execvp()
-  */
-
   return forker;
 }
 

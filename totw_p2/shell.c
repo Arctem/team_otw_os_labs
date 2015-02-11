@@ -39,6 +39,12 @@ int main(int argc, char *argv[]) {
   char *prompt = "totw> ";
   FILE *file = stdin;
 
+  int arguments = 0; /* Number of arguments we have */
+  int semis = 0; /* Number of semicolons we have */
+  int next_arg = 0; /* Which argument we start at next */
+  char *short_list[80]; /* In the event we have semicolons, this keeps a short list of it */
+  int error = 0; /* The value execvp returns if invalid command */
+
   if(argc == 2) {
     file = fopen(argv[1], "r");
     if(file == 0) {
@@ -49,12 +55,6 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "Too many arguments.\n");
     return -1;
   }
-
-  int arguments = 0; /* Number of arguments we have */
-  int semis = 0; /* Number of semicolons we have */
-  int next_arg = 0; /* Which argument we start at next */
-  char *short_list[80]; /* In the event we have semicolons, this keeps a short list of it */
-  int error = 0; /* The value execvp returns if invalid command */
 
   while(should_run) {
     if(file == stdin) {
@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
       should_run = 0;
       continue;
     }
-        
+
     trim(in);
 
     /* Check for exit. */

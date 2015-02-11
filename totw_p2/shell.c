@@ -28,6 +28,8 @@ void trim(char *str);
 char* get_string();
 char* fget_input(FILE* fp); //Gets next line from a file.
 
+int isError(int err); //Prints out error message, changes error back to 0
+
 int main(int argc, char *argv[]) {
   char *args[80];
   int should_run = 1; /* flag to determine when to exit */
@@ -54,6 +56,7 @@ int main(int argc, char *argv[]) {
   int semis = 0; //Number of semicolons we have
   int next_arg = 0; //Which argument we start at next
   char *short_list[80]; //In the event we have semicolons, this keeps a short list of it
+  int error = 0; //The value execvp returns if invalid command
 
   while(should_run) {
     //in = get_input(prompt);
@@ -114,7 +117,8 @@ int main(int argc, char *argv[]) {
 	  pid_t cmd = fork();
 	  if(cmd >= 0) {
 	    if(cmd == 0){
-	      execvp(short_list[0], short_list);
+	      error = execvp(short_list[0], short_list);
+	      error = isError(error);
 	      exit(0);
 	    }
 	  }
@@ -128,7 +132,8 @@ int main(int argc, char *argv[]) {
 	}
       }
       if(semis == 0) {
-	execvp(args[0], args);
+	error = execvp(args[0], args);
+	error = isError(error);
 	exit(0);
       } else {
 	//Account for the last argument
@@ -138,7 +143,8 @@ int main(int argc, char *argv[]) {
 	  k++;
 	}
 	short_list[k] = NULL;
-	execvp(short_list[0], short_list);
+	error = execvp(short_list[0], short_list);
+	error = isError(error);
 	exit(0);
       }
     }
@@ -215,4 +221,11 @@ char* fget_input(FILE *fp) {
   str[length - 1] = '\0';  //Set the last character to be a null terminator.
     
   return str;
+}
+
+int isError(int err) {
+  if(err < 0) {
+    perror("Invalid command.");
+  }
+  return (0);
 }

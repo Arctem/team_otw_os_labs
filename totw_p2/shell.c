@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
   char *in = NULL;
   char *next_cmd = NULL;
   int i = 0;
-  //int status = 0;
+  int status = 0;
   char *prompt = "totw> ";
   FILE *file = stdin;
   char **commands = NULL;
@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
 
     for(i = 0; i < cmd_count; i++) {
       waitpid(pids[i], &status, 0);
-      if(status != NULL) {
+      if(status != 0) {
 	fprintf(stderr, "Error %d encountered while waiting on PID %d.\n",
 		status, pids[i]);
       }

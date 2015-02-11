@@ -20,7 +20,6 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <readline/readline.h>
-#include <pthread.h>
 
 void trim(char *str);
 char* get_string();

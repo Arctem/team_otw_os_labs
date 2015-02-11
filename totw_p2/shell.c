@@ -135,7 +135,7 @@ int run_cmd(char *cmd) {
   *(2) the child process will invoke execvp()
   */
 
-  return 0;
+  return forker;
 }
 
 //Returns a pointer to a new string consisting of a null terminator.

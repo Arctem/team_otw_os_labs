@@ -2,10 +2,20 @@ Team Omega Tiger Woods OS Lab Project 2
 Andrew Baker
 Russell White
 
-The purpose of this project is to create a shell compatible with Linux. The requirements of this project are 
+The purpose of this project is to create a shell compatible with Linux. The requirements of this project are a shell with two modes: Interactive and Batch. Interactive mode is supposed to display a prompt (in this case: "totw> "), allow the user to type a command, run said command, and repeat. Batch mode is supposed to read in a file, print the command, execute command, and repeat until either 'quit', 'exit', or EOF is reached. Batch mode does NOT display a prompt. To terminate the shell, users can either input 'quit', 'exit', or hit Ctrl-D on the keyboard. The shell is supposed to handle multiple commands on the same line using the semicolon character. The prompt does not display until the line is finished. There are two given errors to check for in the shell: An incorrect number of command line arguments to the shell, or the given batch file does not exist or cannot be opened.
 
-Our shell is a basic shell, being a reworking of a previous shell written for CSE222, with extra features found in other shells.
+Our shell is a basic shell, being a reworking of a previous shell written for CSE222, with extra features stated above.
 
 To build our shell, the included Makefile can be used to build it. Just run make in the same directory the shell is included in.
 
 This shell has two ways it can be used. It can be run in interactive or batch mode. To use interactive mode, run the shell (./shell) with no arguments. Interactive mode works just like any other shell when users open a Linux terminal. Users can input commands over and over until the shell is exited. To use batch mode, run the shell with one argument. This argument must be a file of Linux commands. In either case to exit the shell, users can type exit or quit. In batch mode, when the end of the file is reached, the shell will automatically exit.
+
+Our shell uses a multitude of functions to run properly:
+get_string: Prepare a string to be used for user input
+fget_input: Read in a file, and return a list of commands to execute
+run_cmd: Run the given command
+is_error: Print out an error message if the given command cannot be executed.
+
+To test this, we ran multiple commands both separately and at once in the shell, as well as using the included sample batch file (test_script).
+
+Everything required for the project is included, implemented, and working correctly.

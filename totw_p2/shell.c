@@ -20,15 +20,13 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <readline/readline.h>
-
-//For the threads
 #include <pthread.h>
 
 void trim(char *str);
 char* get_string();
-char* fget_input(FILE* fp); //Gets next line from a file.
+char* fget_input(FILE* fp); /* Gets next line from a file. */
 
-int is_error(int err); //Prints out error message, changes error back to 0
+int is_error(int err); /* Prints out error message, changes error back to 0 */
 
 int main(int argc, char *argv[]) {
   char *args[80];
@@ -52,14 +50,13 @@ int main(int argc, char *argv[]) {
     return -1;
   }
 
-  int arguments = 0; //Number of arguments we have
-  int semis = 0; //Number of semicolons we have
-  int next_arg = 0; //Which argument we start at next
-  char *short_list[80]; //In the event we have semicolons, this keeps a short list of it
-  int error = 0; //The value execvp returns if invalid command
+  int arguments = 0; /* Number of arguments we have */
+  int semis = 0; /* Number of semicolons we have */
+  int next_arg = 0; /* Which argument we start at next */
+  char *short_list[80]; /* In the event we have semicolons, this keeps a short list of it */
+  int error = 0; /* The value execvp returns if invalid command */
 
   while(should_run) {
-    //in = get_input(prompt);
     if(file == stdin) {
       in = readline(prompt);
     }
@@ -80,7 +77,7 @@ int main(int argc, char *argv[]) {
       free(in);
       continue;
     }
-      
+
     /* Parse args */
     args[0] = strtok(in, " ");
     
@@ -91,29 +88,29 @@ int main(int argc, char *argv[]) {
       if(wait(&status) != pid)
 	;
     } else {
-      //Check if there is a semicolon in the arguments, before executing the arguments
-      //If so, we want to execute the arguments after the semicolon separately
+      /* Check if there is a semicolon in the arguments, before executing the arguments */
+      /* If so, we want to execute the arguments after the semicolon separately */
 
       //How many arguments are there?
       while(args[arguments] != NULL) {
 	arguments++;
       }
 
-      //Now we can find where a semicolon is
+      /* Now we can find where a semicolon is */
       for(i = 0; i < arguments; i++){
 	if(strcmp(args[i], ";") == 0){
-	  //Hey we found a semicolon
+	  /* Hey we found a semicolon */
 	  semis++;
 	  
-	  //Everything from next_arg to i - 1 is a (hopefully) valid command
-	  //Store it all into short list
+	  /* Everything from next_arg to i - 1 is a (hopefully) valid command */
+	  /* Store it all into short list */
 	  int k = 0;
 	  for(j = next_arg; j < i; j++) {
 	    short_list[k] = args[j];
 	    k++;
 	  }
 	  short_list[k] = NULL;
-	  //Let's use a fork for concurrency
+	  /* Let's use a fork for concurrency */
 	  pid_t cmd = fork();
 	  if(cmd >= 0) {
 	    if(cmd == 0){
@@ -126,9 +123,9 @@ int main(int argc, char *argv[]) {
 	    perror("Forking failed.\n");
 	  }
 	  
-	  //Set the next argument counter
+	  /* Set the next argument counter */
 	  next_arg = i + 1;
-	  //printf("i:%d\n", i);
+	  /* printf("i:%d\n", i); */
 	}
       }
       if(semis == 0) {
@@ -136,7 +133,7 @@ int main(int argc, char *argv[]) {
 	error = is_error(error);
 	exit(0);
       } else {
-	//Account for the last argument
+	/* Account for the last argument */
 	int k = 0;
 	for(j = next_arg; j < arguments; j++) {
 	  short_list[k] = args[j];
@@ -193,14 +190,13 @@ char* get_string() {
 }
 
 char* fget_input(FILE *fp) {
-  char* str = get_string();   //String to return.
-  char input = 0; //Stores user input character by character.
-  int length = 1; //Size of one to start: just '\0'
+  char* str = get_string();   /* String to return. */
+  char input = 0; /* Stores user input character by character. */
+  int length = 1; /* Size of one to start: just '\0' */
     
   do {
     input = fgetc(fp);
         
-    //End the loop if user ends the input.
     if(input == '\n' || input == '\0')
       break;
         
@@ -209,16 +205,16 @@ char* fget_input(FILE *fp) {
       return NULL;
     }
             
-    str = realloc(str, ++length); //Increases size by 1.
+    str = realloc(str, ++length);
     if (!str) {
       fprintf(stderr, "realloc failed to allocate memory\n");
       exit(-1);
     }
         
-    str[length - 2] = input; //Set second to last character to the new input.
+    str[length - 2] = input; /* Set second to last character to the new input. */
   } while(1);
     
-  str[length - 1] = '\0';  //Set the last character to be a null terminator.
+  str[length - 1] = '\0';  /* Set the last character to be a null terminator. */
     
   return str;
 }

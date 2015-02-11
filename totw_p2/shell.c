@@ -117,24 +117,26 @@ int main(int argc, char *argv[]) {
 /* Runs a command and returns the PID of the new process. */
 int run_cmd(char *cmd) {
   int error = 0; /* The value execvp returns if invalid command */
+  int argc = 0;
+  char **args = NULL;
 
-  char *execute[80];
   char *tmp = strtok(cmd, " ");
-  int a = 0;
-  execute[0] = tmp;
-  a = 1;
+
   while(tmp != NULL) {
+    argc++;
+    args = realloc(args, argc * sizeof(char*));
+    args[argc - 1] = tmp;
     tmp = strtok(NULL, " ");
-    execute[a] = tmp;
-    a++;
   }
-  execute[a] = NULL;
+
+  args = realloc(args, (argc + 1) * sizeof(char*));
+  args[argc] = 0;
 
   /* Let's use a fork for concurrency */
   pid_t forker = fork();
   if(forker >= 0) {
     if(forker == 0){
-      error = execvp(execute[0], execute);
+      error = execvp(args[0], args);
       error = is_error(error);
     }
   }  else {

@@ -63,14 +63,6 @@ int main(int argc, char *argv[]) {
       continue;
     }
 
-    /* Check for exit. */
-    if((strncmp(in, "exit", 4) == 0) || (strncmp(in, "quit", 4) == 0)) {
-      should_run = 0;
-      free(in);
-      continue;
-    }
-
-
     /* Split into multiple commands by semicolons */
     cmd_count = 0;
     next_cmd = strtok(in, ";");
@@ -90,6 +82,10 @@ int main(int argc, char *argv[]) {
 	/* This means we are in a child process and should terminate. */
 	should_run = 0;
 	break;
+      } else if(pids[i] == -1) {
+	/* This means exit or quit was entered and we should terminate after */
+	/* waiting on other processes. */
+	should_run = 0;
       }
     }
 
@@ -109,6 +105,8 @@ int main(int argc, char *argv[]) {
   }
 
   free(commands);
+  free(in);
+  free(pids);
 
   fclose(file);
   exit(0);
@@ -131,6 +129,13 @@ int run_cmd(char *cmd) {
 
   args = realloc(args, (argc + 1) * sizeof(char*));
   args[argc] = 0;
+
+  /* Check for exit. */
+  if((strncmp(args[0], "exit", 4) == 0) || (strncmp(args[0], "quit", 4) == 0)) {
+    free(args);
+    return -1;
+  }
+
 
   /* Let's use a fork for concurrency */
   pid_t forker = fork();

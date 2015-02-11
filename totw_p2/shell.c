@@ -143,6 +143,7 @@ int run_cmd(char *cmd) {
     perror("Forking failed");
   }
 
+  free(args);
   return forker;
 }
 

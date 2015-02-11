@@ -105,10 +105,10 @@ int main(int argc, char *argv[]) {
 
     
     free(in);
+    free(pids);
   }
 
   free(commands);
-  free(pids);
 
   fclose(file);
   exit(0);

@@ -88,6 +88,19 @@ int main(int argc, char *argv[]) {
 
     for(i = 0; i < cmd_count; i++) {
       pids[i] = run_cmd(commands[i]);
+      if(pids[i] == 0) {
+	/* This means we are in a child process and should terminate. */
+	should_run = 0;
+	break;
+      }
+    }
+
+    for(i = 0; i < cmd_count; i++) {
+      waitpid(pids[i], &status, 0);
+      if(status != NULL) {
+	fprintf(stderr, "Error %d encountered while waiting on PID %d.\n",
+		status, pids[i]);
+      }
     }
 
     
@@ -95,6 +108,7 @@ int main(int argc, char *argv[]) {
   }
 
   free(commands);
+  free(pids);
 
   fclose(file);
   exit(0);

@@ -116,11 +116,23 @@ int main(int argc, char *argv[]) {
 int run_cmd(char *cmd) {
   int error = 0; /* The value execvp returns if invalid command */
 
+  char *execute[80];
+  char *tmp = strtok(cmd, " ");
+  int a = 0;
+  execute[0] = tmp;
+  a = 1;
+  while(tmp != NULL) {
+    tmp = strtok(NULL, " ");
+    execute[a] = tmp;
+    a++;
+  }
+  execute[a] = NULL;
+
   /* Let's use a fork for concurrency */
   pid_t forker = fork();
   if(forker >= 0) {
     if(forker == 0){
-      error = execvp(cmd[0], cmd);
+      error = execvp(execute[0], execute);
       error = is_error(error);
     }
   }  else {

@@ -124,7 +124,7 @@ int run_cmd(char *cmd) {
       error = is_error(error);
     }
   }  else {
-    perror("Forking failed.\n");
+    perror("Forking failed");
   }
 
   /**

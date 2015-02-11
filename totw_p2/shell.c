@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
     for(i = 0; i < cmd_count; i++) {
       waitpid(pids[i], &status, 0);
       if(status != 0) {
-	fprintf(stderr, "Error %d encountered while waiting on PID %d.\n",
+	fprintf(stderr, "Error %x encountered while waiting on PID %d.\n",
 		status, pids[i]);
       }
     }

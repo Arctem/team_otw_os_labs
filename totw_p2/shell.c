@@ -131,7 +131,6 @@ int run_cmd(char *cmd) {
   *After reading user input, the steps are:
   *(1) fork a child process using fork()
   *(2) the child process will invoke execvp()
-  *(3) if command include &, parent will invoke wait()
   */
 
   return 0;

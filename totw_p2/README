@@ -1,0 +1,11 @@
+Team Omega Tiger Woods OS Lab Project 2
+Andrew Baker
+Russell White
+
+The purpose of this project is to create a shell compatible with Linux. The requirements of this project are 
+
+Our shell is a basic shell, being a reworking of a previous shell written for CSE222, with extra features found in other shells.
+
+To build our shell, the included Makefile can be used to build it. Just run make in the same directory the shell is included in.
+
+This shell has two ways it can be used. It can be run in interactive or batch mode. To use interactive mode, run the shell (./shell) with no arguments. Interactive mode works just like any other shell when users open a Linux terminal. Users can input commands over and over until the shell is exited. To use batch mode, run the shell with one argument. This argument must be a file of Linux commands. In either case to exit the shell, users can type exit or quit. In batch mode, when the end of the file is reached, the shell will automatically exit.

@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <semaphore.h>
 
 #define BUFFER_SIZE 10
 
@@ -76,6 +77,10 @@ void *producer_func(void *data) {
   int *buffer = ((thread_data*) data)->buffer;
   printf("Producer %d starting.\n", thread_num);
 
+  while(1) {
+
+  }
+
   free(data);
   return NULL;
 }
@@ -84,6 +89,10 @@ void *consumer_func(void *data) {
   int thread_num = ((thread_data*) data)->thread_num;
   int *buffer = ((thread_data*) data)->buffer;
   printf("Consumer %d starting.\n", thread_num);
+
+  while(1) {
+
+  }
 
   free(data);
   return NULL;

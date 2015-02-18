@@ -1,7 +1,7 @@
 all: p3
 
 p3: p3.c
-	clang -g -Wall p3.c -o p3 -lpthread
+	clang -g -Wall p3.c -o p3 -lpthread -lrt
 
 tar: totw_p3.tgz
 

@@ -35,6 +35,7 @@ int pop(buffer *buff) {
   int retval = buff->data[0];
   for(i = 0; i < BUFFER_SIZE - 1; i++)
     buff->data[i] = buff->data[i + 1];
+  buff->data[BUFFER_SIZE - 1] = -1;
   
   return retval;
 }

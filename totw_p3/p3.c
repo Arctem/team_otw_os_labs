@@ -45,6 +45,11 @@ int main(int argc, char *argv[]) {
   pthread_t *producers;
   pthread_t *consumers;
   sem_t *semaphore;
+
+  if(argc != 4) {
+    perror("Usage: ./p3 producers consumers FIFO/FILO");
+    return(-1);
+  }
   
   /* 1. Get command line arguments */
   int num_producers = atoi(argv[1]);

@@ -18,12 +18,7 @@
 #include <pthread.h>
 #include <semaphore.h>
 
-#define BUFFER_SIZE 10
-
-typedef struct _thread_buffer {
-  int stack;
-  int *data;
-} buffer;
+#include "buffer.h"
 
 typedef struct _thread_data {
   int thread_num;
@@ -35,11 +30,6 @@ typedef struct _thread_data {
 void *producer_func(void *data);
 void *consumer_func(void *data);
 
-/* Functions to add/remove from the buffer */
-/* Will respect the setting of stack inside struct */
-void add_to(buffer *buff, int value);
-void pop(buffer *buff);
-
 int main(int argc, char *argv[]) {
   int i;
   pthread_t *producers;
@@ -48,7 +38,7 @@ int main(int argc, char *argv[]) {
 
   if(argc != 4) {
     perror("Usage: ./p3 producers consumers FIFO/FILO");
-    return(-1);
+    return -1;
   }
   
   /* 1. Get command line arguments */

@@ -8,7 +8,7 @@
  * Class: CSE 325
  * Instructor: Zheng
  * Assignment: Lab Project #3
- * Assigned: January 11, 2015
+ * Assigned: February 11, 2015
  * Due: February 25, 2015
  *****************************************************/
 
@@ -112,6 +112,11 @@ void *producer_func(void *data) {
     printf("Producer %d locked it.\n", thread_num);
     usleep(rand() % 1000000); /* usleep takes input in microseconds */
     printf("Producer %d done waiting.\n", thread_num);
+
+    /*Check if buffer is full before adding something*/
+    if(){
+      /*add_to(buff, rand());*/
+    }
     sem_post(semaphore);
   }
 
@@ -131,6 +136,11 @@ void *consumer_func(void *data) {
     printf("Consumer %d locked it.\n", thread_num);
     usleep(rand() % 1000000); /* usleep takes input in microseconds */
     printf("Consumer %d done waiting.\n", thread_num);
+
+    /*Check if buffer is empty before grabbing something*/
+    if(){
+	/*pop(buff);*/
+    }
     sem_post(semaphore);
   }
 

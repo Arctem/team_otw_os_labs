@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
   int i;
   pthread_t *producers;
   pthread_t *consumers;
-  sem_t *semaphore = malloc(sizeof(sem_t));;
+  sem_t *semaphore;
   
   /* 1. Get command line arguments */
   int num_producers = atoi(argv[1]);
@@ -44,6 +44,9 @@ int main(int argc, char *argv[]) {
   int *buffer = malloc(BUFFER_SIZE * sizeof(int));
   for(i = 0; i < BUFFER_SIZE; i++)
     buffer[i] = -1;
+
+  semaphore = malloc(sizeof(sem_t));
+  sem_init(semaphore, 0, 0);
 
   /* 3. Create producer thread(s) */
   producers = malloc(num_producers * sizeof(pthread_t));
@@ -66,13 +69,13 @@ int main(int argc, char *argv[]) {
   }
   
   /* 5. Sleep 300 seconds */
-  sleep(10);
+  sleep(20);
   
   /* 6. Exit */
   free(producers);
   free(consumers);
-  free(buffer);
   free(semaphore);
+  free(buffer);
 
   return 0;
 }
@@ -80,10 +83,12 @@ int main(int argc, char *argv[]) {
 void *producer_func(void *data) {
   int thread_num = ((thread_data*) data)->thread_num;
   int *buffer = ((thread_data*) data)->buffer;
+  sem_t *semaphore = ((thread_data*) data)->semaphore;
   printf("Producer %d starting.\n", thread_num);
 
   while(1) {
-
+    usleep(rand() % 1000000); /* usleep takes input in microseconds */
+    printf("Producer %d done waiting.\n", thread_num);
   }
 
   free(data);
@@ -93,10 +98,12 @@ void *producer_func(void *data) {
 void *consumer_func(void *data) {
   int thread_num = ((thread_data*) data)->thread_num;
   int *buffer = ((thread_data*) data)->buffer;
+  sem_t *semaphore = ((thread_data*) data)->semaphore;
   printf("Consumer %d starting.\n", thread_num);
 
   while(1) {
-
+    usleep(rand() % 1000000); /* usleep takes input in microseconds */
+    printf("Consumer %d done waiting.\n", thread_num);
   }
 
   free(data);

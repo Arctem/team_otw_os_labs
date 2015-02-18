@@ -99,17 +99,16 @@ void *producer_func(void *data) {
   while(1) {
     usleep(rand() % 1000000); /* usleep takes input in microseconds */
     sem_wait(semaphore);
-    printf("Producer %d locked it.\n", thread_num);
-    usleep(rand() % 1000000); /* usleep takes input in microseconds */
-    printf("Producer %d done waiting.\n", thread_num);
 
     /*Check if buffer is full before adding something*/
-    if(is_full(buff) != -1){
+    if(!is_full(buff)) {
       /*If not full, we can add a number to the buffer*/
       int to_buffer = rand() % 10; /*Keeping it maxed at 9 for now*/
       /*Keeps it looking reasonable*/
       add_to(buff, to_buffer);
       printf("Buffer received: %d\n", to_buffer);
+    } else {
+      printf("Buffer full, not writing.\n");
     }
     sem_post(semaphore);
   }
@@ -127,15 +126,14 @@ void *consumer_func(void *data) {
   while(1) {
     usleep(rand() % 1000000); /* usleep takes input in microseconds */
     sem_wait(semaphore);
-    printf("Consumer %d locked it.\n", thread_num);
-    usleep(rand() % 1000000); /* usleep takes input in microseconds */
-    printf("Consumer %d done waiting.\n", thread_num);
 
     /*Check if buffer is empty before grabbing something*/
-    if(is_empty(buff) != -1){
+    if(!is_empty(buff)) {
       /*If not empty, we can do things*/
       int from_buffer = pop(buff);
       printf("Buffer gave: %d\n",from_buffer);
+    } else {
+      printf("Buffer empty, not reading.\n");
     }
     sem_post(semaphore);
   }

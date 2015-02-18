@@ -45,5 +45,5 @@ int is_empty(buffer *buff) {
 }
 
 int is_full(buffer *buff) {
-  return buff->data[BUFFER_SIZE - 1] == -1;
+  return buff->data[BUFFER_SIZE - 1] != -1;
 }

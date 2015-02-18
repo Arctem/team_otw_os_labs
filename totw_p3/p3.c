@@ -14,12 +14,23 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <pthread.h>
 
 #define BUFFER_SIZE 10
 
+void *producer_func(void *data);
+void *consumer_func(void *data);
+
+typedef struct _thread_data {
+  int thread_num;
+  int *buffer;
+} thread_data;
 
 int main(int argc, char *argv[]) {
   int i;
+  pthread_t *producers;
+  pthread_t *consumers;
   
   /* 1. Get command line arguments */
   int num_producers = atoi(argv[1]);
@@ -32,10 +43,48 @@ int main(int argc, char *argv[]) {
     buffer[i] = -1;
 
   /* 3. Create producer thread(s) */
+  producers = malloc(num_producers * sizeof(pthread_t));
+  for(i = 0; i < num_producers; i++) {
+    thread_data *data = malloc(sizeof(thread_data));
+    data->thread_num = i;
+    data->buffer = buffer;
+    pthread_create(&producers[i], NULL, producer_func, data);
+  }
+  
   /* 4. Create consumer thread(s) */
+  consumers = malloc(num_consumers * sizeof(pthread_t));
+  for(i = 0; i < num_consumers; i++) {
+    thread_data *data = malloc(sizeof(thread_data));
+    data->thread_num = i;
+    data->buffer = buffer;
+    pthread_create(&consumers[i], NULL, consumer_func, data);
+  }
+  
   /* 5. Sleep 300 seconds */
+  sleep(10);
+  
   /* 6. Exit */
+  free(producers);
+  free(consumers);
   free(buffer);
 
   return 0;
+}
+
+void *producer_func(void *data) {
+  int thread_num = ((thread_data*) data)->thread_num;
+  int *buffer = ((thread_data*) data)->buffer;
+  printf("Producer %d starting.\n", thread_num);
+
+  free(data);
+  return NULL;
+}
+
+void *consumer_func(void *data) {
+  int thread_num = ((thread_data*) data)->thread_num;
+  int *buffer = ((thread_data*) data)->buffer;
+  printf("Consumer %d starting.\n", thread_num);
+
+  free(data);
+  return NULL;
 }

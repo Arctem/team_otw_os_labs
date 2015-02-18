@@ -20,9 +20,6 @@
 
 #define BUFFER_SIZE 10
 
-void *producer_func(void *data);
-void *consumer_func(void *data);
-
 typedef struct _thread_buffer {
   int stack;
   int *data;
@@ -34,6 +31,14 @@ typedef struct _thread_data {
   sem_t *semaphore;
   int stack;
 } thread_data;
+
+void *producer_func(void *data);
+void *consumer_func(void *data);
+
+/* Functions to add/remove from the buffer */
+/* Will respect the setting of stack inside struct */
+void add_to(buffer *buff, int value);
+void pop(buffer *buff);
 
 int main(int argc, char *argv[]) {
   int i;

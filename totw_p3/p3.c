@@ -26,12 +26,14 @@ void *consumer_func(void *data);
 typedef struct _thread_data {
   int thread_num;
   int *buffer;
+  sem_t *semaphore;
 } thread_data;
 
 int main(int argc, char *argv[]) {
   int i;
   pthread_t *producers;
   pthread_t *consumers;
+  sem_t *semaphore = malloc(sizeof(sem_t));;
   
   /* 1. Get command line arguments */
   int num_producers = atoi(argv[1]);
@@ -49,6 +51,7 @@ int main(int argc, char *argv[]) {
     thread_data *data = malloc(sizeof(thread_data));
     data->thread_num = i;
     data->buffer = buffer;
+    data->semaphore = semaphore;
     pthread_create(&producers[i], NULL, producer_func, data);
   }
   
@@ -58,6 +61,7 @@ int main(int argc, char *argv[]) {
     thread_data *data = malloc(sizeof(thread_data));
     data->thread_num = i;
     data->buffer = buffer;
+    data->semaphore = semaphore;
     pthread_create(&consumers[i], NULL, consumer_func, data);
   }
   

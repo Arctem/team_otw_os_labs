@@ -104,8 +104,12 @@ void *producer_func(void *data) {
     printf("Producer %d done waiting.\n", thread_num);
 
     /*Check if buffer is full before adding something*/
-    if(){
-      /*add_to(buff, rand());*/
+    if(is_full(buff) != -1){
+      /*If not full, we can add a number to the buffer*/
+      int to_buffer = rand() % 10; /*Keeping it maxed at 9 for now*/
+      /*Keeps it looking reasonable*/
+      add_to(buff, to_buffer);
+      printf("Buffer received: %d\n", to_buffer);
     }
     sem_post(semaphore);
   }
@@ -128,8 +132,10 @@ void *consumer_func(void *data) {
     printf("Consumer %d done waiting.\n", thread_num);
 
     /*Check if buffer is empty before grabbing something*/
-    if(){
-	/*pop(buff);*/
+    if(is_empty(buff) != -1){
+      /*If not empty, we can do things*/
+      int from_buffer = pop(buff);
+      printf("Buffer gave: %d\n",from_buffer);
     }
     sem_post(semaphore);
   }

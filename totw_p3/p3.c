@@ -18,7 +18,13 @@
 
 int main(int argc, char *argv[]) {
   /* 1. Get command line arguments */
+  int num_producers = atoi(argv[1]);
+  int num_consumers = atoi(argv[2]);
+  int filo = atoi(argv[3]);
+
   /* 2. Initialize buffer entries with -1 */
+
+
   /* 3. Create producer thread(s) */
   /* 4. Create consumer thread(s) */
   /* 5. Sleep 300 seconds */

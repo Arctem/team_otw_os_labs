@@ -72,6 +72,7 @@ int main(int argc, char *argv[]) {
   free(producers);
   free(consumers);
   free(buffer);
+  free(semaphore);
 
   return 0;
 }

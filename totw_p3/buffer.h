@@ -30,4 +30,6 @@ int pop(buffer *buff);
 int is_empty(buffer *buff);
 int is_full(buffer *buff);
 
+void print_buffer(buffer *buff);
+void print_buffer_v2(buffer *buff);
 #endif

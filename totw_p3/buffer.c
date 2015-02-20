@@ -12,6 +12,8 @@
  * Due: February 25, 2015
  *****************************************************/
 
+#include <stdio.h>
+
 #include "buffer.h"
 
 /* Stack will add to the start of the list, */
@@ -47,4 +49,41 @@ int is_empty(buffer *buff) {
 
 int is_full(buffer *buff) {
   return buff->data[BUFFER_SIZE - 1] != -1;
+}
+
+/* Prints the buffer at max size, uses _ for empty space in buffer */
+void print_buffer(buffer *buff) {
+  int i;
+  printf(": buffer = [");
+  for(i = 0; i < BUFFER_SIZE; i++) {
+    if(buff->data[i] != -1) {
+      printf("%d", buff->data[i]);
+      if(i != BUFFER_SIZE - 1) {
+        printf(", ");
+      }
+    } else {
+      printf("_");
+      if(i != BUFFER_SIZE - 1) {
+        printf(", ");
+      }
+    }
+  }
+  printf("]\n");
+}
+
+/* Prints the buffer as long as how many elements there are in buffer */
+void print_buffer_v2(buffer *buff) {
+  int i;
+  printf(": buffer = [");
+  for(i = 0; i < BUFFER_SIZE; i++) {
+    if(buff->data[i] != -1) {
+      printf("%d", buff->data[i]);
+      if((i != BUFFER_SIZE - 1) && (buff->data[i+1] != -1)) {
+        printf(", ");
+      }
+    } else {
+      break;
+    }
+  }
+  printf("]\n");
 }

@@ -106,9 +106,12 @@ void *producer_func(void *data) {
       int to_buffer = rand() % 10; /*Keeping it maxed at 9 for now*/
       /*Keeps it looking reasonable*/
       add_to(buff, to_buffer);
-      printf("Buffer received: %d\n", to_buffer);
+      //printf("Buffer received: %d\n", to_buffer);
+      printf("Item %d added by Producer %d", to_buffer, thread_num);
+      //print_buffer(buff);
+      print_buffer_v2(buff);
     } else {
-      printf("Buffer full, not writing.\n");
+      printf("Buffer full, Producer %d not adding.\n", thread_num);
     }
     sem_post(semaphore);
   }
@@ -131,9 +134,12 @@ void *consumer_func(void *data) {
     if(!is_empty(buff)) {
       /*If not empty, we can do things*/
       int from_buffer = pop(buff);
-      printf("Buffer gave: %d\n",from_buffer);
+      //printf("Buffer gave: %d\n",from_buffer);
+      printf("Item %d taken by Consumer %d", from_buffer, thread_num);
+      //print_buffer(buff);
+      print_buffer_v2(buff);
     } else {
-      printf("Buffer empty, not reading.\n");
+      printf("Buffer empty, Consumer %d not taking.\n", thread_num);
     }
     sem_post(semaphore);
   }

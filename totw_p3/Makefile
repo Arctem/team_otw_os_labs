@@ -12,5 +12,4 @@ totw_p3.tgz: p3.c buffer.c buffer.h
 	tar -czvf totw_p2.tgz p3.c buffer.c buffer.h Makefile README
 
 clean:
-	rm *~
 	rm *.o

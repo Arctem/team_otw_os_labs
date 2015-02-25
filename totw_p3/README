@@ -1,3 +1,11 @@
 Team Omega Tiger Woods OS Lab Project 3
 Andrew Baker
 Russell White
+
+The purpose of this project is to create a program to simulate the synchronization
+problem of the classic Producer-Consumer problem. This program does this by
+creating a thread for each producer and consumer, and creating a single buffer
+that each producer and consumer can access. This buffer is limited to a size of
+10. Each producer and consumer can access the buffer only when the buffer is not
+being accessed by another producer or consumer. Producers can add numbers to the
+buffer, and consumers can remove numbers from it.

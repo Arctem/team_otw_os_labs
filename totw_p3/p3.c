@@ -88,9 +88,19 @@ int main(int argc, char *argv[]) {
   sleep(300);
   
   /* 6. Exit */
+  for(i = 0; i < num_producers; i++) {
+    pthread_cancel(producers[i]);
+    pthread_join(producers[i], NULL);
+  }
+  for(i = 0; i < num_consumers; i++) {
+    pthread_cancel(consumers[i]);
+    pthread_join(consumers[i], NULL);
+  }
+
   free(producers);
   free(consumers);
   free(semaphore);
+  free(buff->data);
   free(buff);
 
   return 0;
@@ -100,6 +110,7 @@ void *producer_func(void *data) {
   int thread_num = ((thread_data*) data)->thread_num;
   buffer *buff = ((thread_data*) data)->buff;
   sem_t *semaphore = ((thread_data*) data)->semaphore;
+  free(data);
   unsigned int seed = clock();
   printf("Producer %d starting.\n", thread_num);
 
@@ -131,6 +142,7 @@ void *consumer_func(void *data) {
   int thread_num = ((thread_data*) data)->thread_num;
   buffer *buff = ((thread_data*) data)->buff;
   sem_t *semaphore = ((thread_data*) data)->semaphore;
+  free(data);
   unsigned int seed = clock();
   printf("Consumer %d starting.\n", thread_num);
 

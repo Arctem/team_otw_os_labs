@@ -22,8 +22,8 @@ or "First In, Last Out", which is a 0 or 1 respectively. This program is suppose
 to handle up to 9 threads and 9 consumers; however, any integer greater than 0
 will work. 0 or smaller integers create no threads.
 
-A script has been included to run through all 100 possibilities to be tested.
-This script will take over 8 hours to fully execute. If desired, change the
+A script has been included to run through all 200 possibilities to be tested.
+This script will take over 16 hours to fully execute. If desired, change the
 sleep timer in p3.c to be shorter (such as 5 seconds instead of 5 minutes).
 The script may also need permissions to execute. Change appropriately.
 

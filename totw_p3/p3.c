@@ -100,16 +100,17 @@ void *producer_func(void *data) {
   int thread_num = ((thread_data*) data)->thread_num;
   buffer *buff = ((thread_data*) data)->buff;
   sem_t *semaphore = ((thread_data*) data)->semaphore;
+  unsigned int seed = clock();
   printf("Producer %d starting.\n", thread_num);
 
   while(1) {
-    usleep(rand() % 1000000); /* usleep takes input in microseconds */
+    usleep(rand_r(&seed) % 1000000); /* usleep takes input in microseconds */
     sem_wait(semaphore);
 
     /*Check if buffer is full before adding something*/
     if(!is_full(buff)) {
       /*If not full, we can add a number to the buffer*/
-      int to_buffer = rand();
+      int to_buffer = rand_r(&seed);
       /*Keeps it looking reasonable*/
       add_to(buff, to_buffer);
       //printf("Buffer received: %d\n", to_buffer);
@@ -130,10 +131,11 @@ void *consumer_func(void *data) {
   int thread_num = ((thread_data*) data)->thread_num;
   buffer *buff = ((thread_data*) data)->buff;
   sem_t *semaphore = ((thread_data*) data)->semaphore;
+  unsigned int seed = clock();
   printf("Consumer %d starting.\n", thread_num);
 
   while(1) {
-    usleep(rand() % 1000000); /* usleep takes input in microseconds */
+    usleep(rand_r(&seed) % 1000000); /* usleep takes input in microseconds */
     sem_wait(semaphore);
 
     /*Check if buffer is empty before grabbing something*/

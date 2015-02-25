@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
   }
   
   /* 5. Sleep 300 seconds */
-  sleep(20);
+  sleep(300);
   
   /* 6. Exit */
   free(producers);
@@ -133,7 +133,17 @@ void *consumer_func(void *data) {
     /*Check if buffer is empty before grabbing something*/
     if(!is_empty(buff)) {
       /*If not empty, we can do things*/
-      int from_buffer = pop(buff);
+      int from_buffer = 0;
+      
+      /*Are we in FIFO or FILO?*/
+      if(buff->stack == 0){
+	/*FIFO*/
+	from_buffer = pop(buff);
+      } else {
+	/*FILO*/
+	from_buffer = reverse_pop(buff);
+      }
+      
       //printf("Buffer gave: %d\n",from_buffer);
       printf("Item %d taken by Consumer %d", from_buffer, thread_num);
       print_buffer(buff);

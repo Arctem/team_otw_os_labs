@@ -1,10 +1,10 @@
 all: p3
 
 p3: p3.c buffer.o
-	clang -g -Wall p3.c buffer.o -o p3 -lpthread -lrt
+	gcc -g -Wall p3.c buffer.o -o p3 -lpthread -lrt
 
 buffer.o: buffer.c buffer.h
-	clang -g -Wall buffer.c -c
+	gcc -g -Wall buffer.c -c
 
 tar: totw_p3.tgz
 

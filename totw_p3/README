@@ -22,18 +22,25 @@ or "First In, Last Out", which is a 0 or 1 respectively. This program is suppose
 to handle up to 9 threads and 9 consumers; however, any integer greater than 0
 will work. 0 or smaller integers create no threads.
 
+A script has been included to run through all 100 possibilities to be tested.
+This script will take over 8 hours to fully execute. If desired, change the
+sleep timer in p3.c to be shorter (such as 5 seconds instead of 5 minutes).
+The script may also need permissions to execute. Change appropriately.
+
 The order this program works is it will read in command line arguments. Then it
 will initialize the buffer to -1 in all 10 spots. Then it will create the
 specified producer threads, followed by the specified consumer threads. After
 that, the program will sleep for 300 seconds, while the producer and consumer
-threads interact with the buffer. After the 300 seconds, the threads and buffer will be cleared, and the program will exit.
+threads interact with the buffer. After the 300 seconds, the threads and buffer
+will be cleared, and the program will exit.
 
 To operate correctly, we created several functions:
 producer_func(): Creates producers, and attempts to add integers to the buffer.
 consumer_func(): Creates consumers, and attmpts to remove integers from the
 buffer.
 add_to(): Adds integers to the buffer.
-pop(): Removes integers from the buffer.
+pop(): Removes integers from the front of the buffer.
+reverse_pop(): Removes integers from the back of the buffer.
 is_empty(): Checks to see if the buffer is empty.
 is_full(): Checks to see if the buffer is full.
 print_buffer(): Prints the buffer, including underscore characters where the

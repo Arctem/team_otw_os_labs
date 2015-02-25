@@ -8,4 +8,40 @@ creating a thread for each producer and consumer, and creating a single buffer
 that each producer and consumer can access. This buffer is limited to a size of
 10. Each producer and consumer can access the buffer only when the buffer is not
 being accessed by another producer or consumer. Producers can add numbers to the
-buffer, and consumers can remove numbers from it.
+buffer, and consumers can remove numbers from it. Each thread waits a random
+time from 0 to 1000 milliseconds before trying to access the buffer. Tjreads are
+created using <pthreads.h>.
+
+To compile this program, a Makefile has been included. Just run make in the same
+directory the source code is included in.
+
+To run this program, 3 arguments are required. The first is an integer for how
+many producers are to be created. The second is an integer for how many consumers
+are to be created. The third determines if the buffer is "First In, First Out"
+or "First In, Last Out", which is a 0 or 1 respectively. This program is supposed
+to handle up to 9 threads and 9 consumers; however, any integer greater than 0
+will work. 0 or smaller integers create no threads.
+
+The order this program works is it will read in command line arguments. Then it
+will initialize the buffer to -1 in all 10 spots. Then it will create the
+specified producer threads, followed by the specified consumer threads. After
+that, the program will sleep for 300 seconds, while the producer and consumer
+threads interact with the buffer. After the 300 seconds, the threads and buffer will be cleared, and the program will exit.
+
+To operate correctly, we created several functions:
+producer_func(): Creates producers, and attempts to add integers to the buffer.
+consumer_func(): Creates consumers, and attmpts to remove integers from the
+buffer.
+add_to(): Adds integers to the buffer.
+pop(): Removes integers from the buffer.
+is_empty(): Checks to see if the buffer is empty.
+is_full(): Checks to see if the buffer is full.
+print_buffer(): Prints the buffer, including underscore characters where the
+buffer has a -1.
+print_buffer_v2(): Prints the buffer, excluding where the buffer has a -1.
+At the time of writing, print_buffer() is currently active.
+
+To test this, we ran the program multiple times using different configurations.
+
+Everything required for this project is included, implemented, and working
+correctly.

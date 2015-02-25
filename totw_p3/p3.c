@@ -46,6 +46,12 @@ int main(int argc, char *argv[]) {
   int num_consumers = atoi(argv[2]);
   int stack = atoi(argv[3]);
 
+  if(stack) {
+    printf("%s", "Running in FILO mode.\n");
+  } else {
+    printf("%s", "Running in FIFO mode.\n");
+  }
+
   /* 2. Initialize buffer entries with -1 */
   buffer *buff = malloc(sizeof(buffer));
   buff->data = malloc(BUFFER_SIZE * sizeof(int));

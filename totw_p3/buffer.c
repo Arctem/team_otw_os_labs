@@ -72,20 +72,3 @@ void print_buffer(buffer *buff) {
   }
   printf("]\n");
 }
-
-/* Prints the buffer as long as how many elements there are in buffer */
-void print_buffer_v2(buffer *buff) {
-  int i;
-  printf(": buffer = [");
-  for(i = 0; i < BUFFER_SIZE; i++) {
-    if(buff->data[i] != -1) {
-      printf("%d", buff->data[i]);
-      if((i != BUFFER_SIZE - 1) && (buff->data[i+1] != -1)) {
-        printf(", ");
-      }
-    } else {
-      break;
-    }
-  }
-  printf("]\n");
-}

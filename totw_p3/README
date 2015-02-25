@@ -40,13 +40,10 @@ consumer_func(): Creates consumers, and attmpts to remove integers from the
 buffer.
 add_to(): Adds integers to the buffer.
 pop(): Removes integers from the front of the buffer.
-reverse_pop(): Removes integers from the back of the buffer.
 is_empty(): Checks to see if the buffer is empty.
 is_full(): Checks to see if the buffer is full.
 print_buffer(): Prints the buffer, including underscore characters where the
 buffer has a -1.
-print_buffer_v2(): Prints the buffer, excluding where the buffer has a -1.
-At the time of writing, print_buffer() is currently active.
 
 To test this, we ran the program multiple times using different configurations.
 

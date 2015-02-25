@@ -32,6 +32,8 @@ void add_to(buffer *buff, int value) {
   }
 }
 
+/* Both stack and queue can remove from the start */
+/* of the list, since they vary in how they add to it. */
 int pop(buffer *buff) {
   int i;
   int retval = buff->data[0];
@@ -39,30 +41,6 @@ int pop(buffer *buff) {
     buff->data[i] = buff->data[i + 1];
   buff->data[BUFFER_SIZE - 1] = -1;
   
-  return retval;
-}
-
-int reverse_pop(buffer *buff) {
-  int i = 0;
-  int retval = 0;
-  /*If the buffer is full, just get the last one*/
-  if(is_full(buff)){
-    retval = buff->data[BUFFER_SIZE - 1];
-    buff->data[BUFFER_SIZE - 1] = -1;
-    return retval;
-  } else {
-    /*If not, find last element in buffer*/
-    for(i = 0; i < BUFFER_SIZE; i++) {
-      if(buff->data[i] == -1){
-        /*Get i - 1*/
-        retval = buff->data[i - 1];
-        buff->data[i - 1] = -1;
-        return retval;
-      }
-    }
-  }
-
-  /*Just to avoid a warning, should never get here*/
   return retval;
 }
 

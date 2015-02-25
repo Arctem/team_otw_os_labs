@@ -26,7 +26,6 @@ typedef struct _thread_buffer {
 /* Will respect the setting of stack inside struct */
 void add_to(buffer *buff, int value);
 int pop(buffer *buff);
-int reverse_pop(buffer *buff);
 
 int is_empty(buffer *buff);
 int is_full(buffer *buff);

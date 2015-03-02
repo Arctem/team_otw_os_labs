@@ -18,6 +18,7 @@ static void destroy_thread_info(thread_info_t *info)
 static void init_sched_queue(sched_queue_t *queue, int queue_size)
 {
   /*...Code goes here...*/
+  list_init(queue->queue); /*Initialize the list.*/
 }
 
 static void destroy_sched_queue(sched_queue_t *queue)

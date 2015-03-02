@@ -2,11 +2,11 @@
 #define	__SCHED_IMPL__H__
 
 struct thread_info {
-	/*...Fill this in...*/
+  /*...Fill this in...*/
 };
 
 struct sched_queue {
-	/*...Fill this in...*/
+  /*...Fill this in...*/
 };
 
 #endif /* __SCHED_IMPL__H__ */

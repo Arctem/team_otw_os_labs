@@ -31,7 +31,7 @@ static void destroy_sched_queue(sched_queue_t *queue)
 /* You need to statically initialize these structures: */
 sched_impl_t sched_fifo = {
   { init_thread_info, destroy_thread_info /*, ...etc... */ }, 
-  { init_sched_queue, destroy_sched_queue /*, ...etc... */ } },
-  sched_rr = {
+  { init_sched_queue, destroy_sched_queue /*, ...etc... */ } };
+sched_impl_t sched_rr = {
     { init_thread_info, destroy_thread_info /*, ...etc... */ }, 
     { init_sched_queue, destroy_sched_queue /*, ...etc... */ } };

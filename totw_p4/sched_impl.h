@@ -9,10 +9,7 @@ struct thread_info {
 
 struct sched_queue {
   /*...Fill this in...*/
-<<<<<<< HEAD
   list_t *queue;
-=======
->>>>>>> 1c8615967f602fa1e8da44a138b1ccdff66742c3
 };
 
 #endif /* __SCHED_IMPL__H__ */

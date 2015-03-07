@@ -54,6 +54,6 @@ sched_impl_t sched_fifo = {
     wait_for_worker, next_worker, wait_for_queue }
 };
 sched_impl_t sched_rr = {
-    { init_thread_info, destroy_thread_info /*, ...etc... */ },
-    { init_sched_queue, destroy_sched_queue /*, ...etc... */ }
+  { init_thread_info, destroy_thread_info /*, ...etc... */ },
+  { init_sched_queue, destroy_sched_queue /*, ...etc... */ }
 };

@@ -2,6 +2,7 @@
 #define	__SCHED_IMPL__H__
 
 #include "list.h"
+#include <stdlib.h>
 
 struct thread_info {
   /*...Fill this in...*/

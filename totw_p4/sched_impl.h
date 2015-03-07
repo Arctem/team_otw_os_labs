@@ -2,6 +2,7 @@
 #define	__SCHED_IMPL__H__
 
 #include "list.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <semaphore.h>
 

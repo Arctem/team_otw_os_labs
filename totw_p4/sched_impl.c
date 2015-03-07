@@ -39,6 +39,7 @@ int elt_in_list(list_t *lst, void *datum) {
 /* Start of thread functions */
 
 static void init_thread_info(thread_info_t *info, sched_queue_t *queue) {
+  printf("Initialized thread struct.\n");
   info->sq = queue;
   info->sem = malloc(sizeof(sem_t));
   sem_init(info->sem, 0, -1); /* initialize semaphore as busy */
@@ -51,6 +52,7 @@ static void destroy_thread_info(thread_info_t *info) {
 
 static void enter_sched_queue(thread_info_t *info) {
   insert_item_tail(info->sq->queue, info);
+  printf("Semaphore %p\n", info->sq->queue_sem);
   sem_post(info->sq->queue_sem);
 }
 
@@ -68,6 +70,7 @@ static void release_cpu(thread_info_t *info) {
 /* Start of scheduler functions */
 
 static void init_sched_queue(sched_queue_t *queue, int queue_size) {
+  printf("Initialized schedule struct.\n");
   queue->queue = malloc(sizeof(list_t));
   list_init(queue->queue);
   queue->max_running = queue_size;
@@ -111,6 +114,7 @@ static thread_info_t *next_worker(sched_queue_t *queue) {
 static void wait_for_queue(sched_queue_t *queue) {
   if(list_size(queue->queue) == 0) {
     /* reinitialize semaphore to wait on threads */
+    printf("Semaphore %p\n", queue->queue_sem);
     sem_init(queue->queue_sem, 0, -1);
     sem_wait(queue->queue_sem);
   }

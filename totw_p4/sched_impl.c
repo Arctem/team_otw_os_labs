@@ -8,7 +8,7 @@ static void init_thread_info(thread_info_t *info, sched_queue_t *queue) {
 }
 
 static void destroy_thread_info(thread_info_t *info) {
-  free(info);
+  //free(info);
 }
 
 static void enter_sched_queue(thread_info_t *info) {
@@ -29,7 +29,7 @@ static void init_sched_queue(sched_queue_t *queue, int queue_size) {
 }
 
 static void destroy_sched_queue(sched_queue_t *queue) {
-  free(queue);
+  //free(queue);
 }
 
 static void wake_up_worker(thread_info_t *queue) {

@@ -90,9 +90,11 @@ static void destroy_sched_queue(sched_queue_t *queue) {
 }
 
 static void wake_up_worker(thread_info_t *info) {
+  sem_post(info->sem);
 }
 
 static void wait_for_worker(sched_queue_t *queue) {
+  sem_wait(queue->sem);
 }
 
 static thread_info_t *next_worker(sched_queue_t *queue) {

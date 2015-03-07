@@ -1,7 +1,18 @@
 #include "scheduler.h"
 #include "sched_impl.h"
 
-/* Fill in your scheduler implementation code below: */
+void insert_item_head(list_t *lst, void *datum) {
+  list_elem_t *elt = malloc(sizeof(list_elem_t));
+  list_elem_init(elt, datum);
+  list_insert_head(lst, elt);
+}
+
+void insert_item_tail(list_t *lst, void *datum) {
+  list_elem_t *elt = malloc(sizeof(list_elem_t));
+  list_elem_init(elt, datum);
+  list_insert_tail(lst, elt);
+}
+
 
 static void init_thread_info(thread_info_t *info, sched_queue_t *queue) {
   info->sq = queue;

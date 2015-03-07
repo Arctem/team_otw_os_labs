@@ -1,4 +1,4 @@
-CC = gcc
+CC = clang
 CCOPTS = -Wall -c -g -ggdb
 LINKOPTS = -Wall -g -ggdb -lpthread
 

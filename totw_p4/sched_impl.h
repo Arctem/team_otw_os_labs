@@ -5,6 +5,7 @@
 
 struct thread_info {
   /*...Fill this in...*/
+  struct sched_queue *sq; /*Schedule queue pointer*/
 };
 
 struct sched_queue {

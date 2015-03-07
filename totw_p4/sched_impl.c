@@ -36,6 +36,12 @@ int elt_in_list(list_t *lst, void *datum) {
   return 0;
 }
 
+void remove_item(list_t *lst, void *datum) {
+  list_elem_t *elt = malloc(sizeof(list_elem_t));
+  list_elem_init(elt, datum);
+  list_remove_elem(lst, elt);
+}
+
 /* Start of thread functions */
 
 static void init_thread_info(thread_info_t *info, sched_queue_t *queue) {
@@ -55,6 +61,8 @@ static void enter_sched_queue(thread_info_t *info) {
 }
 
 static void leave_sched_queue(thread_info_t *info) {
+  /*It's a startto removing something from the queue */
+  remove_item(info->sq->queue, info);
 }
 
 static void wait_for_cpu(thread_info_t *info) {

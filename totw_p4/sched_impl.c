@@ -5,10 +5,10 @@
 
 static void init_thread_info(thread_info_t *info, sched_queue_t *queue) {
   info->sq = queue;
+  sem_init(&info->sem, 0, 0); /* initialize semaphore as busy */
 }
 
 static void destroy_thread_info(thread_info_t *info) {
-  free(info);
 }
 
 static void enter_sched_queue(thread_info_t *info) {
@@ -24,12 +24,13 @@ static void release_cpu(thread_info_t *info) {
 }
 
 static void init_sched_queue(sched_queue_t *queue, int queue_size) {
-  /*...Code goes here...*/
-  list_init(queue->queue); /*Initialize the list.*/
+  queue->queue = malloc(sizeof(list_t));
+  list_init(queue->queue);
+  sem_init(&queue->sem, 0, queue_size); /* initialize semaphore based on size */
 }
 
 static void destroy_sched_queue(sched_queue_t *queue) {
-  free(queue);
+  free(queue->queue);
 }
 
 static void wake_up_worker(thread_info_t *queue) {

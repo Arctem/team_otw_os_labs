@@ -3,15 +3,16 @@
 
 #include "list.h"
 #include <stdlib.h>
+#include <semaphore.h>
 
 struct thread_info {
-  /*...Fill this in...*/
-  struct sched_queue *sq; /*Schedule queue pointer*/
+  struct sched_queue *sq;
+  sem_t sem;
 };
 
 struct sched_queue {
-  /*...Fill this in...*/
   list_t *queue;
+  sem_t sem;
 };
 
 #endif /* __SCHED_IMPL__H__ */

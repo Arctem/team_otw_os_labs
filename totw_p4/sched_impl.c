@@ -27,6 +27,15 @@ static void destroy_sched_queue(sched_queue_t *queue)
 }
 
 /*...More functions go here...*/
+static void fifo_scheduler(sched_queue_t *queue)
+{
+  /*Stuffs*/
+}
+
+static void rr_scheduler(sched_queue_t *queue)
+{
+  /*Moar stuffs*/
+}
 
 /* You need to statically initialize these structures: */
 sched_impl_t sched_fifo = {

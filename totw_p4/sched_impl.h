@@ -15,6 +15,7 @@ struct sched_queue {
   int max_running;
   list_t *running;
   sem_t *sem;
+  sem_t *queue_sem;
 };
 
 #endif /* __SCHED_IMPL__H__ */

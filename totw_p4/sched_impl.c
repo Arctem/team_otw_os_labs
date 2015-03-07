@@ -40,6 +40,7 @@ void remove_item(list_t *lst, void *datum) {
   list_elem_t *elt = malloc(sizeof(list_elem_t));
   list_elem_init(elt, datum);
   list_remove_elem(lst, elt);
+  free(elt);
 }
 
 /* Start of thread functions */

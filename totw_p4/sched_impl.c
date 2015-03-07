@@ -1,6 +1,8 @@
 #include "scheduler.h"
 #include "sched_impl.h"
 
+/* Utility functions */
+
 void insert_item_head(list_t *lst, void *datum) {
   list_elem_t *elt = malloc(sizeof(list_elem_t));
   list_elem_init(elt, datum);
@@ -13,6 +15,7 @@ void insert_item_tail(list_t *lst, void *datum) {
   list_insert_tail(lst, elt);
 }
 
+/* Start of thread functions */
 
 static void init_thread_info(thread_info_t *info, sched_queue_t *queue) {
   info->sq = queue;
@@ -38,6 +41,8 @@ static void wait_for_cpu(thread_info_t *info) {
 
 static void release_cpu(thread_info_t *info) {
 }
+
+/* Start of scheduler functions */
 
 static void init_sched_queue(sched_queue_t *queue, int queue_size) {
   queue->queue = malloc(sizeof(list_t));

@@ -25,6 +25,17 @@ void *peek_item_tail(list_t *lst) {
   return elt->datum;
 }
 
+int elt_in_list(list_t *lst, void *datum) {
+  list_elem_t *elt = list_get_head(lst);
+  while(elt != NULL) {
+    if(elt->datum == datum)
+      return 1;
+    else
+      elt = elt->next;
+  }
+  return 0;
+}
+
 /* Start of thread functions */
 
 static void init_thread_info(thread_info_t *info, sched_queue_t *queue) {
@@ -84,11 +95,14 @@ static void wait_for_worker(sched_queue_t *queue) {
 }
 
 static thread_info_t *next_worker(sched_queue_t *queue) {
-  if(list_size(queue->queue) == 0) {
-    return NULL;
-  } else {
-    return peek_item_head(queue->queue);
+  list_elem_t *elt = peek_item_head(queue->queue);
+  while(elt != NULL) {
+    if(!elt_in_list(queue->running, elt->datum))
+      return elt->datum;
+    else
+      elt = elt->next;
   }
+  return NULL;
 }
 
 static void wait_for_queue(sched_queue_t *queue) {

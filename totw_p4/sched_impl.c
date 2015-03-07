@@ -16,19 +16,24 @@ void insert_item_tail(list_t *lst, void *datum) {
 
 static void init_thread_info(thread_info_t *info, sched_queue_t *queue) {
   info->sq = queue;
-  sem_init(&info->sem, 0, 0); /* initialize semaphore as busy */
+  info->sem = malloc(sizeof(sem_t));
+  sem_init(info->sem, 0, -1); /* initialize semaphore as busy */
 }
 
 static void destroy_thread_info(thread_info_t *info) {
+  sem_destroy(info->sem);
+  free(info->sem);
 }
 
 static void enter_sched_queue(thread_info_t *info) {
+  insert_item_tail(info->sq->queue, info);
 }
 
 static void leave_sched_queue(thread_info_t *info) {
 }
 
 static void wait_for_cpu(thread_info_t *info) {
+  sem_wait(info->sem);
 }
 
 static void release_cpu(thread_info_t *info) {
@@ -37,14 +42,21 @@ static void release_cpu(thread_info_t *info) {
 static void init_sched_queue(sched_queue_t *queue, int queue_size) {
   queue->queue = malloc(sizeof(list_t));
   list_init(queue->queue);
-  sem_init(&queue->sem, 0, queue_size); /* initialize semaphore based on size */
+  queue->max_running = queue_size;
+  queue->running = malloc(sizeof(list_t));
+  list_init(queue->running);
+  queue->sem = malloc(sizeof(sem_t));
+  sem_init(queue->sem, 0, queue_size - 1); /* initialize semaphore based on size */
 }
 
 static void destroy_sched_queue(sched_queue_t *queue) {
+  sem_destroy(queue->sem);
+  free(queue->sem);
+  free(queue->running);
   free(queue->queue);
 }
 
-static void wake_up_worker(thread_info_t *queue) {
+static void wake_up_worker(thread_info_t *info) {
 }
 
 static void wait_for_worker(sched_queue_t *queue) {

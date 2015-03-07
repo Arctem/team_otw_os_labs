@@ -7,12 +7,14 @@
 
 struct thread_info {
   struct sched_queue *sq;
-  sem_t sem;
+  sem_t *sem;
 };
 
 struct sched_queue {
   list_t *queue;
-  sem_t sem;
+  int max_running;
+  list_t *running;
+  sem_t *sem;
 };
 
 #endif /* __SCHED_IMPL__H__ */

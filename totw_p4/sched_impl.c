@@ -62,8 +62,7 @@ static void wait_for_cpu(thread_info_t *info) {
 }
 
 static void release_cpu(thread_info_t *info) {
-  sem_post(info->sem);
-  sem_post(info->sq->sem); /*I think we need this here*/
+  sem_post(info->sq->sem);
 }
 
 /* Start of scheduler functions */

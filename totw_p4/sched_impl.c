@@ -77,7 +77,6 @@ static void enter_sched_queue(thread_info_t *info) {
 }
 
 static void leave_sched_queue(thread_info_t *info) {
-  /*It's a startto removing something from the queue */
   remove_item(info->sq->queue, info);
 }
 
@@ -86,6 +85,7 @@ static void wait_for_cpu(thread_info_t *info) {
 }
 
 static void release_cpu(thread_info_t *info) {
+  remove_item(info->sq->running, info);
   sem_post(info->sq->sem);
 }
 
@@ -114,10 +114,14 @@ static void destroy_sched_queue(sched_queue_t *queue) {
 }
 
 static void wake_up_worker(thread_info_t *info) {
+  insert_item_tail(info->sq->running, info);
   sem_post(info->sem);
 }
 
 static void wait_for_worker(sched_queue_t *queue) {
+  /* int val = 0; */
+  /* sem_getvalue(queue->sem, &val); */
+  /* printf("Sem value: %d\n", val); */
   sem_wait(queue->sem);
 }
 

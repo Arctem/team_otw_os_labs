@@ -99,7 +99,7 @@ void destroy_wrapper(list_wrap_t *wrapper) {
 static void init_thread_info(thread_info_t *info, sched_queue_t *queue) {
   info->sq = queue;
   info->sem = calloc(1, sizeof(sem_t));
-  sem_init(info->sem, 0, 0); /* initialize semaphore as busy */
+  sem_init(info->sem, 0, -1); /* initialize semaphore as busy */
 }
 
 static void destroy_thread_info(thread_info_t *info) {
@@ -109,7 +109,6 @@ static void destroy_thread_info(thread_info_t *info) {
 
 static void enter_sched_queue(thread_info_t *info) {
   insert_item_tail(info->sq->queue, info);
-  sem_post(info->sq->queue_sem);
 }
 
 static void leave_sched_queue(thread_info_t *info) {
@@ -140,15 +139,11 @@ static void init_sched_queue(sched_queue_t *queue, int queue_size) {
   queue->running = create_wrapper();
   
   queue->sem = calloc(1, sizeof(sem_t));
-  sem_init(queue->sem, 0, queue_size); /* initialize semaphore based on size */
+  sem_init(queue->sem, 0, queue_size - 1); /* initialize semaphore based on size */
   printf("Queue size: %d\n", queue_size);
-  queue->queue_sem = calloc(1, sizeof(sem_t));
-  sem_init(queue->queue_sem, 0, 0); /* initialize semaphore to wait on threads */
 }
 
 static void destroy_sched_queue(sched_queue_t *queue) {
-  sem_destroy(queue->queue_sem);
-  free(queue->queue_sem);
   sem_destroy(queue->sem);
   free(queue->sem);
   destroy_wrapper(queue->running);
@@ -179,9 +174,16 @@ static thread_info_t *next_worker(sched_queue_t *queue) {
 }
 
 static void wait_for_queue(sched_queue_t *queue) {
-  /* Do nothing here because if we did we'd miss when */
-  /* num_workers_remaining in scheduler.c hits 0. */
-  /* Unfortunate side effect is busy waiting */
+  static int done_thing = 0;
+  if(done_thing) {
+    /* Do nothing here because if we did we'd miss when */
+    /* num_workers_remaining in scheduler.c hits 0. */
+    /* Unfortunate side effect is busy waiting */
+  } else {
+    while(wrapper_size(queue->queue) == 0)
+      ;
+    done_thing = 1;
+  }
 }
 
 /* You need to statically initialize these structures: */

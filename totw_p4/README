@@ -72,8 +72,8 @@ of 4, 7 worker threads, and 2 loops. Terminates successfully.
 no_args.png : Running the scheduler with no arguments. Terminates successfully.
 rr_3_2_1.png : Running the scheduler with the RR scheduler with a queue size
 of 3, 2 worker threads, and 1 loop. Terminates successfully.
-rr_4_7_2(temp).png : Running the scheduler with the RR scheduler with a queue
-size of 4, 7 worker threads, and 2 loops. Does not terminate yet.
+rr_4_7_2.png : Running the scheduler with the RR scheduler with a queue
+size of 4, 7 worker threads, and 2 loops. Terminates successfully.
 
 TESTING PLAN / RESULTS
 ---------------------------------------------------------------------------------

@@ -11,10 +11,15 @@ struct thread_info {
   sem_t *sem;
 };
 
+typedef struct list_wrapper {
+  list_t *data;
+  sem_t *sem;
+} list_wrap_t;
+
 struct sched_queue {
-  list_t *queue;
+  list_wrap_t *queue;
   int max_running;
-  list_t *running;
+  list_wrap_t *running;
   sem_t *sem;
   sem_t *queue_sem;
 };

@@ -48,14 +48,15 @@ algorithms, as well as operate the data types we use in these algorithms. These
 functions are broken up into different sections: Utility, Thread, and Scheduler
 functions. The Utility functions serve add to, look at, search for, and remove
 from the list. These functions are "insert_item_head", "insert_item_tail",
-"peek_item_head", "peek_item_tail", "elt_in_list", "find_in_list", and
-"remvoe_item". The Thread functions are "init_thread_info",
-"destroy_thread_info", "enter_sched_queue", "leave_sched_queue", "wait_for_cpu",
-"fifo_release_cpu", and "rr_release_cpu". The Schedler functions are
-"init_sched_queue", "destroy_sched_queue", "wake_up_worker", "wait_for_worker",
-"next_worker", and "wait_for_queue". These names should be self-explanatory
-enough as to what the functions do, but for the Thread and Scheduler functions,
-more description to them can be found in "scheduler.h".
+"peek_item_head", "peek_item_tail", "elt_in_list", "find_in_list",
+"remvoe_item", "wrapper_size", "create_wrapper", and "destroy_wrapper". The
+Thread functions are "init_thread_info", "destroy_thread_info",
+"enter_sched_queue", "leave_sched_queue", "wait_for_cpu", "fifo_release_cpu",
+and "rr_release_cpu". The Schedler functions are "init_sched_queue",
+"destroy_sched_queue", "wake_up_worker", "wait_for_worker", "next_worker", and
+"wait_for_queue". These names should be self-explanatory enough as to what the
+functions do, but for the Thread and Scheduler functions, more description to
+them can be found in "scheduler.h".
 
 DIAGRAMS AND EXPLANATION
 ---------------------------------------------------------------------------------

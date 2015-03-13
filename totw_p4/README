@@ -1,0 +1,67 @@
+Team Omega Tiger Woods OS Lab Project 4
+Andrew Baker
+Russell White
+
+INTRODUCTION
+---------------------------------------------------------------------------------
+The purpose of this project is to create a program to develope a user-mode
+thread scheduler. We were given a basic scheduler, a dummy scheduler, which lets
+the OS schedule all threads, as well as the framework to implement two other
+schedulers. Our task was to implement a First-In, First-Out scheduler (FIFO),
+and a Round Robin scheduler (RR). To do this, we were required to modify two
+files: "sched_impl.h", and "sched_impl.c".
+
+COMPILATION
+---------------------------------------------------------------------------------
+To compile this program, run "make" to compile all files and produce a proper
+executable. "make test" can also be run to test the schedulers against 5
+different configurations.
+
+COMMAND EXPLANATION
+---------------------------------------------------------------------------------
+To run this program, 3 or 4 arguments must be supplied. The first is the
+scheduling algorithm to use. It must be "-dummy", "-fifo", or "-rr" for the
+dummy, FIFO, and RR schedulers respectively. The second is the size of the
+queue. This determines how many threads can be in the scheduler at one time.
+The third is how many threads to schedule. The fourth argument is optional, it
+is how many loops to iterate through. If this argument is not supplied, the 5
+loops will be iterated through.
+
+The FIFO scheduler works such that each thread that comes in executes completely
+in the order it arrived in.
+
+The RR scheduler works similarly to the FIFO scheduler, except that each thread
+can only run for a certain amount of time. Once the thread has run for that
+amount of time, it moves to the back of the queue, so another thread can run.
+
+DATA STRUCTURES
+---------------------------------------------------------------------------------
+For "sched_impl.h", we stored our strctures for the thread information and the
+schedule queue here. The thread information structure has two pointers: one to
+the schedule queue structure, and another to the semaphore it uses. The schedule
+queue structure has 5 parts to it: a pointer to the queue, a pointer to the
+running queue, the maximum amount of threads running, and two semaphores (one
+for the queue, the other for the semaphore in the thread info structure).
+
+For "sched_impl.c", we created many functions to run the two scheduling
+algorithms, as well as operate the data types we use in these algorithms. These
+functions are broken up into different sections: Utility, Thread, and Scheduler
+functions. The Utility functions serve add to, look at, search for, and remove
+from the list. These functions are "insert_item_head", "insert_item_tail",
+"peek_item_head", "peek_item_tail", "elt_in_list", "find_in_list", and
+"remvoe_item". The Thread functions are "init_thread_info",
+"destroy_thread_info", "enter_sched_queue", "leave_sched_queue", "wait_for_cpu",
+"fifo_release_cpu", and "rr_release_cpu". The Schedler functions are
+"init_sched_queue", "destroy_sched_queue", "wake_up_worker", "wait_for_worker",
+"next_worker", and "wait_for_queue". These names should be self-explanatory
+enough as to what the functions do, but for the Thread and Scheduler functions,
+more description to them can be found in "scheduler.h".
+
+TESTING PLAN / RESULTS
+---------------------------------------------------------------------------------
+In order to test this, we ran our own custom commands, as well as running "make
+test". At the time of writing, FIFO and RR scheduling work as necessary, but a
+race condition occurs when the number of threads is greater than or equal to the
+queue size sometimes, where the program hangs before the very end of the program.
+Also, running "make test" fails with every input, but running each input outside
+of "make test" runs just fine.

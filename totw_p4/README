@@ -57,6 +57,24 @@ from the list. These functions are "insert_item_head", "insert_item_tail",
 enough as to what the functions do, but for the Thread and Scheduler functions,
 more description to them can be found in "scheduler.h".
 
+DIAGRAMS AND EXPLANATION
+---------------------------------------------------------------------------------
+Provided are diagrams showing how the program operates given some sample cases.
+These files are:
+dummy_3_2_1.png : Running the scheduler with the dummy scheduler with a queue
+size of 3, 2 worker threads, and 1 loop. Terminates successfully.
+dummy_4_7_2.png : Running the scheduler with the dummy scheduler with a queue
+size of 4, 7 worker threads, and 2 loops. Terminates successfully.
+fifo_3_2_1.png : Running the scheduler with the FIFO scheduler with a queue size
+of 3, 2 worker threads, and 1 loop. Terminates successfully.
+fifo_4_7_2.png : Running the scheduler with the FIFO scheduler with a queue size
+of 4, 7 worker threads, and 2 loops. Terminates successfully.
+no_args.png : Running the scheduler with no arguments. Terminates successfully.
+rr_3_2_1.png : Running the scheduler with the RR scheduler with a queue size
+of 3, 2 worker threads, and 1 loop. Terminates successfully.
+rr_4_7_2(temp).png : Running the scheduler with the RR scheduler with a queue
+size of 4, 7 worker threads, and 2 loops. Does not terminate yet.
+
 TESTING PLAN / RESULTS
 ---------------------------------------------------------------------------------
 In order to test this, we ran our own custom commands, as well as running "make

@@ -140,7 +140,6 @@ static void init_sched_queue(sched_queue_t *queue, int queue_size) {
   
   queue->sem = calloc(1, sizeof(sem_t));
   sem_init(queue->sem, 0, queue_size - 1); /* initialize semaphore based on size */
-  printf("Queue size: %d\n", queue_size);
 }
 
 static void destroy_sched_queue(sched_queue_t *queue) {

@@ -83,3 +83,19 @@ race condition occurs when the number of threads is greater than or equal to the
 queue size sometimes, where the program hangs before the very end of the program.
 Also, running "make test" fails with every input, but running each input outside
 of "make test" runs just fine.
+
+BUGS
+---------------------------------------------------------------------------------
+Currently we are regularly failing 8 of the 10 tests, but I believe all those
+failures are caused by one minor bug that I can't find. The semaphores used to
+control access to the queue and running lists seem to be behaving strangely.
+The strangest thing is that it will occasionally hang indefinitely when run
+with ./scheduler -rr 5 7 5. Basically there's some issue with thread
+synchronization. Some of the test failures are due to (I suspect) issues with
+a difference between the order threads are created and the order they actually end
+up calling enter_sched_queue(), which we cannot control.
+
+Running the other test cases manually seems to function perfectly, but the tests
+still fail for a reason we cannot fully determine. For some cases (like -rr 5 7 5)
+the program will hang at the end instead of successfully terminating about 50% of
+the time.

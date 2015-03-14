@@ -62,11 +62,15 @@ list_elem_t *find_in_list(list_wrap_t *lst, void *datum) {
 }
 
 void remove_item(list_wrap_t *lst, void *datum) {
-  list_elem_t *elt = find_in_list(lst, datum);
   sem_wait(lst->sem);
-  if(elt) {
-    list_remove_elem(lst->data, elt);
-    free(elt);
+  list_elem_t *elt = list_get_head(lst->data);
+  while(elt != NULL) {
+    if(elt->datum == datum) {
+      list_remove_elem(lst->data, elt);
+      free(elt);
+      break;
+    } else
+      elt = elt->next;
   }
   sem_post(lst->sem);
 }
@@ -87,7 +91,7 @@ list_wrap_t *create_wrapper() {
 }
 
 void destroy_wrapper(list_wrap_t *wrapper) {
-  sem_wait(wrapper->sem);
+  /* sem_wait(wrapper->sem); */
   sem_destroy(wrapper->sem);
   free(wrapper->sem);
   free(wrapper->data);

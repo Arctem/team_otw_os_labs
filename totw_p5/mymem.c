@@ -31,6 +31,20 @@ void *myMemory = NULL;
 static struct memoryList *head;
 static struct memoryList *next;
 
+/* For releasing memory in initmem */
+void release(){
+  /*
+  while(head->next != NULL) {
+    
+  }
+  */
+  head = next = NULL;
+}
+
+/* For initializing memory initmem */
+void initialize(){
+  
+}
 
 /* initmem must be called prior to mymalloc and myfree.
 
@@ -56,12 +70,12 @@ void initmem(strategies strategy, size_t sz)
   if (myMemory != NULL) free(myMemory); /* in case this is not the first time initmem2 is called */
 
   /* TODO: release any other memory you were using for bookkeeping when doing a re-initialization! */
-
+  release();
 
   myMemory = malloc(sz);
 	
   /* TODO: Initialize memory management structure. */
-
+  initialize();
 
 }
 

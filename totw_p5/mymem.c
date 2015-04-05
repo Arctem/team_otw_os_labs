@@ -139,35 +139,137 @@ void myfree(void* block)
 /* Get the number of contiguous areas of free space in memory. */
 int mem_holes()
 {
-  return 0;
+  int holes = 0;
+  /* Make sure head isn't null before we go through and accidentally segfault */
+  if(head != NULL) {
+
+    /* Gotta start at the head */
+    if(head->alloc == 0){
+      holes++;
+    }
+
+    /* Go through the memory */
+    struct memoryList *tmp = head;
+    while(tmp->next != NULL){
+      if(tmp->alloc == 0){
+	holes++;
+      }
+      tmp = tmp->next;
+    }
+    free(tmp); /* Don't need tmp anymore */
+  }
+  return holes;
 }
 
 /* Get the number of bytes allocated */
 int mem_allocated()
 {
-  return 0;
+  int allocated_bytes = 0;
+  /* Make sure head isn't null before we go through and accidentally segfault */
+  if(head != NULL) {
+
+    /* Gotta start at the head */
+    if(head->alloc == 1){
+      allocated_bytes += head->size;
+    }
+
+    /* Go through the memory */
+    struct memoryList *tmp = head;
+    while(tmp->next != NULL){
+      if(tmp->alloc == 1){
+	allocated_bytes += tmp->size;
+      }
+      tmp = tmp->next;
+    }
+    free(tmp); /* Don't need tmp anymore */
+  }
+  return allocated_bytes;
 }
 
-/* Number of non-allocated bytes */
+/* Number of non-allocated (a.k.a. free) bytes */
 int mem_free()
 {
-  return 0;
+  int non_bytes = 0;
+  /* Make sure head isn't null before we go through and accidentally segfault */
+  if(head != NULL) {
+
+    /* Gotta start at the head */
+    if(head->alloc == 0){
+      non_bytes += head->size;
+    }
+
+    /* Go through the memory */
+    struct memoryList *tmp = head;
+    while(tmp->next != NULL){
+      if(tmp->alloc == 0){
+	non_bytes += tmp->size;
+      }
+      tmp = tmp->next;
+    }
+    free(tmp); /* Don't need tmp anymore */
+  }
+  return non_bytes;
 }
 
 /* Number of bytes in the largest contiguous area of unallocated memory */
 int mem_largest_free()
 {
-  return 0;
+  int free_bytes = 0;
+  /* Make sure head isn't null before we go through and accidentally segfault */
+  if(head != NULL) {
+
+    /* Gotta start at the head */
+    if(head->alloc == 0){
+      free_bytes = head->size;
+    }
+
+    /* Go through the memory */
+    struct memoryList *tmp = head;
+    while(tmp->next != NULL){
+      if(tmp->alloc == 0){
+	if(tmp->size > free_bytes){
+	  free_bytes = tmp->size;
+	}
+      }
+      tmp = tmp->next;
+    }
+    free(tmp); /* Don't need tmp anymore */
+  }
+  return free_bytes;
 }
 
 /* Number of free blocks smaller than "size" bytes. */
 int mem_small_free(int size)
 {
-  return 0;
+  int free_blocks = 0;
+  /* Make sure head isn't null before we go through and accidentally segfault */
+  if(head != NULL) {
+
+    /* Gotta start at the head */
+    if(head->alloc == 0){
+      if(head->size < size){
+	free_blocks++;
+      }
+    }
+
+    /* Go through the memory */
+    struct memoryList *tmp = head;
+    while(tmp->next != NULL){
+      if(tmp->alloc == 0){
+	if(tmp->size < size){
+	  free_blocks++;
+	}
+      }
+      tmp = tmp->next;
+    }
+    free(tmp); /* Don't need tmp anymore */
+  }
+  return free_blocks;
 }       
 
 char mem_is_alloc(void *ptr)
 {
+  
   return 0;
 }
 

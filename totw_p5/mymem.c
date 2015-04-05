@@ -55,7 +55,12 @@ void release(){
 
 /* For initializing memory initmem */
 void initialize(){
-  
+  if(head == NULL){
+    /*Put something here*/
+  }
+  if(next == NULL){
+    /*Put something here, or put into head*/
+  }
 }
 
 /* initmem must be called prior to mymalloc and myfree.

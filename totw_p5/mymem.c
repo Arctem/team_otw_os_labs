@@ -33,10 +33,11 @@ static struct memoryList *next;
 
 /* For releasing memory in initmem */
 void release(){
-  static struct memoryList *tmp = NULL
-    /*while(head->next != NULL) {
+  struct memoryList *tmp = NULL;
+  
+  *while(head->next != NULL) {
     
-  }*/
+  }
   
   head->alloc = '0';
   next->alloc = '0';

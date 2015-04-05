@@ -13,7 +13,7 @@
 struct memoryList
 {
   // doubly-linked list
-  struct memoryList *last;
+  struct memoryList *prev; /* prev makes more sense to me than last. */
   struct memoryList *next;
 
   int size;            // How many bytes in this block?
@@ -21,7 +21,7 @@ struct memoryList
                        // 0 if this block is free.
   void *ptr;           // location of block in memory pool.
 };
-
+ 
 strategies myStrategy = NotSet;    // Current strategy
 
 
@@ -33,12 +33,13 @@ static struct memoryList *next;
 
 /* For releasing memory in initmem */
 void release(){
-  /*
-  while(head->next != NULL) {
+  static struct memoryList *tmp = NULL
+    /*while(head->next != NULL) {
     
-  }
-  */
-  head = next = NULL;
+  }*/
+  
+  head->alloc = '0';
+  next->alloc = '0';
 }
 
 /* For initializing memory initmem */

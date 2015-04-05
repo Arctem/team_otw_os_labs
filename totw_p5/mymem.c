@@ -45,8 +45,9 @@ void release(){
       head = head->next;
       tmp = NULL;
     }
-    
-    next->alloc = '0';
+    if(next != NULL){
+      next->alloc = '0';
+    }
   }
   /*Else shouldn't have to do anything I think?*/
   /*Double check before finishing*/

@@ -35,18 +35,13 @@ static struct memoryList *next;
 void release(){
   
   if(head != NULL){
-    struct memoryList *tmp = NULL;
-    
     head->alloc = '0';
   
     while(head->next != NULL) {
-      tmp = head;
+      next = head;
       head->next->alloc = '0';
       head = head->next;
-      tmp = NULL;
-    }
-    if(next != NULL){
-      next->alloc = '0';
+      next = NULL;
     }
   }
   /*Else shouldn't have to do anything I think?*/
@@ -127,6 +122,16 @@ void *mymalloc(size_t requested)
 /* Frees a block of memory previously allocated by mymalloc. */
 void myfree(void* block)
 {
+  if(head != NULL){
+    next = head;
+    /*Go through memory to find the thing to free*/
+    while(next->next != NULL){
+      if(next->ptr == block){
+	next->alloc = '0';
+      }
+      next = next->next;
+    }
+  }
   return;
 }
 
@@ -149,14 +154,13 @@ int mem_holes()
     }
 
     /* Go through the memory */
-    struct memoryList *tmp = head;
-    while(tmp->next != NULL){
-      if(tmp->alloc == 0){
+    next = head;
+    while(next->next != NULL){
+      if(next->alloc == 0){
 	holes++;
       }
-      tmp = tmp->next;
+      next = next->next;
     }
-    free(tmp); /* Don't need tmp anymore */
   }
   return holes;
 }
@@ -174,14 +178,13 @@ int mem_allocated()
     }
 
     /* Go through the memory */
-    struct memoryList *tmp = head;
-    while(tmp->next != NULL){
-      if(tmp->alloc == 1){
-	allocated_bytes += tmp->size;
+    next = head;
+    while(next->next != NULL){
+      if(next->alloc == 1){
+	allocated_bytes += next->size;
       }
-      tmp = tmp->next;
+      next = next->next;
     }
-    free(tmp); /* Don't need tmp anymore */
   }
   return allocated_bytes;
 }
@@ -199,14 +202,13 @@ int mem_free()
     }
 
     /* Go through the memory */
-    struct memoryList *tmp = head;
-    while(tmp->next != NULL){
-      if(tmp->alloc == 0){
-	non_bytes += tmp->size;
+    next = head;
+    while(next->next != NULL){
+      if(next->alloc == 0){
+	non_bytes += next->size;
       }
-      tmp = tmp->next;
+      next = next->next;
     }
-    free(tmp); /* Don't need tmp anymore */
   }
   return non_bytes;
 }
@@ -224,16 +226,15 @@ int mem_largest_free()
     }
 
     /* Go through the memory */
-    struct memoryList *tmp = head;
-    while(tmp->next != NULL){
-      if(tmp->alloc == 0){
-	if(tmp->size > free_bytes){
-	  free_bytes = tmp->size;
+    next = head;
+    while(next->next != NULL){
+      if(next->alloc == 0){
+	if(next->size > free_bytes){
+	  free_bytes = next->size;
 	}
       }
-      tmp = tmp->next;
+      next = next->next;
     }
-    free(tmp); /* Don't need tmp anymore */
   }
   return free_bytes;
 }
@@ -253,23 +254,29 @@ int mem_small_free(int size)
     }
 
     /* Go through the memory */
-    struct memoryList *tmp = head;
-    while(tmp->next != NULL){
-      if(tmp->alloc == 0){
-	if(tmp->size < size){
+    next = head;
+    while(next->next != NULL){
+      if(next->alloc == 0){
+	if(next->size < size){
 	  free_blocks++;
 	}
       }
-      tmp = tmp->next;
+      next = next->next;
     }
-    free(tmp); /* Don't need tmp anymore */
+    free(next); /* Don't need tmp anymore */
   }
   return free_blocks;
 }       
 
 char mem_is_alloc(void *ptr)
 {
-  
+  next = head;
+  while(next->next != NULL){
+    if(next->ptr == ptr){
+      return next->alloc;
+    }
+    next = next->next;
+  }
   return 0;
 }
 

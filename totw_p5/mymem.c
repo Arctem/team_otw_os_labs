@@ -245,7 +245,7 @@ int mem_allocated() {
   /* Go through the memory */
   tmp = head;
   while(tmp != NULL) {
-    if(!tmp->alloc) {
+    if(tmp->alloc) {
       allocated_bytes += tmp->size;
     }
     tmp = tmp->next;

@@ -228,8 +228,8 @@ int mem_holes() {
 
   /* Go through the memory */
   tmp = head;
-  while(tmp != NULL){
-    if(!tmp->alloc){
+  while(tmp != NULL) {
+    if(!tmp->alloc) {
       holes++;
     }
     tmp = tmp->next;
@@ -246,14 +246,14 @@ int mem_allocated() {
   if(head != NULL) {
 
     /* Gotta start at the head */
-    if(head->alloc == 1){
+    if(head->alloc == 1) {
       allocated_bytes += head->size;
     }
 
     /* Go through the memory */
     tmp = head;
-    while(tmp->next != NULL){
-      if(tmp->alloc == 1){
+    while(tmp->next != NULL) {
+      if(tmp->alloc == 1) {
 	allocated_bytes += tmp->size;
       }
       tmp = tmp->next;
@@ -271,14 +271,14 @@ int mem_free() {
   if(head != NULL) {
 
     /* Gotta start at the head */
-    if(head->alloc == 0){
+    if(head->alloc == 0) {
       non_bytes += head->size;
     }
 
     /* Go through the memory */
     tmp = head;
-    while(tmp->next != NULL){
-      if(tmp->alloc == 0){
+    while(tmp->next != NULL) {
+      if(tmp->alloc == 0) {
 	non_bytes += tmp->size;
       }
       tmp = tmp->next;
@@ -296,15 +296,15 @@ int mem_largest_free() {
   if(head != NULL) {
 
     /* Gotta start at the head */
-    if(head->alloc == 0){
+    if(head->alloc == 0) {
       free_bytes = head->size;
     }
 
     /* Go through the memory */
     tmp = head;
-    while(tmp->next != NULL){
-      if(tmp->alloc == 0){
-	if(tmp->size > free_bytes){
+    while(tmp->next != NULL) {
+      if(tmp->alloc == 0) {
+	if(tmp->size > free_bytes) {
 	  free_bytes = tmp->size;
 	}
       }

@@ -179,6 +179,8 @@ void *mymalloc(size_t requested) {
 
   if(!to_use) {
     return NULL;
+  } else {
+    /* split it up if necessary, then return the block */
   }
 }
 

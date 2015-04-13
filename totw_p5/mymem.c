@@ -188,7 +188,6 @@ void myfree(void* block) {
       tmp = tmp->next;
     }
   }
-  return;
 }
 
 /****** Memory status/property functions ******

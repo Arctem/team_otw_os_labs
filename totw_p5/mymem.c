@@ -42,6 +42,8 @@ void release() {
     head = head->next;
     free(tmp);
   }
+  
+  head = next = NULL;
 }
 
 /* For initializing memory initmem */
@@ -131,20 +133,7 @@ void *mymalloc(size_t requested) {
     }
     break;
   case Next:
-    tmp = next;
-    
-    while(tmp != NULL) {
-      if(tmp->size >= requested && !tmp->alloc) {
-	next = to_use = tmp;
-	break;
-      }
-      
-      tmp = tmp->next;
-      if(!tmp)
-	tmp = head;
-      if(tmp == next)
-	break;
-    }
+    to_use = next;
     break;
   }
 
@@ -169,6 +158,20 @@ void *mymalloc(size_t requested) {
       new_list->size = extra;
       to_use->size = requested;
       new_list->ptr = to_use->ptr + requested;
+    }
+
+    /* Update next if needed */
+    if(myStrategy == Next) {
+      next = to_use->next;
+
+      while(!next || (next->alloc && next != to_use)) {
+	if(!next) {
+	  next = head;
+	} else {
+	  next = next->next;
+	}
+      }
+    
     }
     return to_use->ptr;
   } else

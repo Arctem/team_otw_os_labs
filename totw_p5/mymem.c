@@ -106,10 +106,11 @@ void *mymalloc(size_t requested) {
 	head->alloc = 1;
       } else {
 	next = head->next;
-	while(next->next != NULL) {
+	while(next != NULL) {
 	  if(next->size >= requested && next->alloc == 0) {
 	    next->alloc = 1;
 	  }
+	  next = next->next;	  
 	}
       }
     }
@@ -122,7 +123,7 @@ void *mymalloc(size_t requested) {
       
       else {
 	next = head->next;
-	while(next->next != NULL) {
+	while(next != NULL) {
 	  if(next->size >= requested && next->alloc == 0) {
 	    if(to_use != NULL && next->size < to_use->size) {
 	      to_use = next;
@@ -130,6 +131,9 @@ void *mymalloc(size_t requested) {
 	    else {
 	      to_use = next;
 	    }
+	  }
+	  if(next->next != NULL) {
+	    next = next->next;
 	  }
 	}
       }
@@ -144,13 +148,16 @@ void *mymalloc(size_t requested) {
 	to_use = head;
       } else {
 	next = head->next;
-	while(next->next != NULL) {
+	while(next != NULL) {
 	  if(next->size >= requested && next->alloc == 0) {
 	    if(to_use != NULL && next->size > to_use->size) {
 	      to_use = next;
 	    } else {
 	      to_use = next;
 	    }
+	  }
+	  if(next->next != NULL) {
+	    next = next->next;
 	  }
 	}
       }

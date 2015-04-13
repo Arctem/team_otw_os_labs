@@ -158,7 +158,9 @@ void *mymalloc(size_t requested) {
       int extra = to_use->size - requested;
       struct memoryList *new_list = malloc(sizeof(struct memoryList));
       new_list->next = to_use->next;
-      new_list->next->prev = new_list;
+      if(new_list->next) {
+	new_list->next->prev = new_list;
+      }
       new_list->prev = to_use;
       to_use->next = new_list;
       

@@ -287,19 +287,18 @@ int mem_largest_free() {
 
 /* Number of free blocks smaller than "size" bytes. */
 int mem_small_free(int size) {
-  int holes = 0;
+  int free_blocks = 0;
   struct memoryList *tmp = NULL;
   
   /* Go through the memory */
   tmp = head;
   while(tmp != NULL) {
     if(tmp->alloc == 0 && tmp->size < size) {
-	free_blocks++;
-      }
+      free_blocks++;
     }
     tmp = tmp->next;
   }
-  return holes;
+  return free_blocks;
 }       
 
 char mem_is_alloc(void *ptr) {

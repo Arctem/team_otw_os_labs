@@ -305,8 +305,8 @@ int mem_small_free(int size) {
 char mem_is_alloc(void *ptr) {
   struct memoryList *tmp = head;
   
-  while(tmp != NULL){
-    if(tmp->ptr == ptr){
+  while(tmp != NULL) {
+    if(tmp->ptr == ptr) {
       return tmp->alloc;
     }
     tmp = tmp->next;

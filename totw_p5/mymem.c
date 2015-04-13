@@ -107,7 +107,7 @@ void *mymalloc(size_t requested) {
 	if(to_use->size >= requested && !to_use->alloc) {
 	  break;
 	} else {
-	  to_use = head->to_use;
+	  to_use = head->next;
 	}
       }
     }

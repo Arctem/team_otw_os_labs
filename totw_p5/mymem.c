@@ -78,12 +78,12 @@ void initmem(strategies strategy, size_t sz) {
   if (myMemory != NULL)
     free(myMemory); /* in case this is not the first time initmem2 is called */
 
-  /* TODO: release any other memory you were using for bookkeeping when doing a re-initialization! */
+  /* release any other memory you were using for bookkeeping when doing a re-initialization! */
   release();
 
   myMemory = malloc(sz);
 	
-  /* TODO: Initialize memory management structure. */
+  /* Initialize memory management structure. */
   initialize();
 }
 
@@ -108,7 +108,7 @@ void *mymalloc(size_t requested) {
       if(to_use->size >= requested && !to_use->alloc) {
 	break;
       } else {
-	to_use = head->next;
+	to_use = to_use->next;
       }
     }
     break;
@@ -152,7 +152,7 @@ void *mymalloc(size_t requested) {
     if(to_use->size == requested) {
       /* simple case, no splitting needed */
       to_use->alloc = 1;
-      return to_use;
+      return to_use->ptr;
     } else {
       /* allocate what's needed, but create a new entry for the rest */
       int extra = to_use->size - requested;

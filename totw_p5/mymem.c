@@ -183,18 +183,19 @@ void merge_blocks(struct memoryList *block) {
   if(block->alloc) {
     return;
   } else {
+    /* first move to the start of this block */
     while(block->prev && !block->prev->alloc) {
-      /* merge backwards */
-      tmp = block->prev;
-      block->size += tmp->size;
-      block->prev = tmp->prev;
-      free(tmp);
+      block = block->prev;
     }
+
+    /* next merge forward so it's all in one struct */
     while(block->next && !block->next->alloc) {
-      /* merge forwards */
       tmp = block->next;
       block->size += tmp->size;
       block->next = tmp->next;
+      if(next == tmp) {
+	next = block;
+      }
       free(tmp);
     }
   }

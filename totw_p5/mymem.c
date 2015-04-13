@@ -242,22 +242,13 @@ int mem_allocated() {
   int allocated_bytes = 0;
   struct memoryList *tmp = NULL;
   
-  /* Make sure head isn't null before we go through and accidentally segfault */
-  if(head != NULL) {
-
-    /* Gotta start at the head */
-    if(head->alloc == 1) {
-      allocated_bytes += head->size;
+  /* Go through the memory */
+  tmp = head;
+  while(tmp != NULL) {
+    if(!tmp->alloc) {
+      allocated_bytes += tmp->size;
     }
-
-    /* Go through the memory */
-    tmp = head;
-    while(tmp->next != NULL) {
-      if(tmp->alloc == 1) {
-	allocated_bytes += tmp->size;
-      }
-      tmp = tmp->next;
-    }
+    tmp = tmp->next;
   }
   return allocated_bytes;
 }
@@ -267,22 +258,13 @@ int mem_free() {
   int non_bytes = 0;
   struct memoryList *tmp = NULL;
   
-  /* Make sure head isn't null before we go through and accidentally segfault */
-  if(head != NULL) {
-
-    /* Gotta start at the head */
-    if(head->alloc == 0) {
-      non_bytes += head->size;
+  /* Go through the memory */
+  tmp = head;
+  while(tmp != NULL) {
+    if(tmp->alloc == 0) {
+      non_bytes += tmp->size;
     }
-
-    /* Go through the memory */
-    tmp = head;
-    while(tmp->next != NULL) {
-      if(tmp->alloc == 0) {
-	non_bytes += tmp->size;
-      }
-      tmp = tmp->next;
-    }
+    tmp = tmp->next;
   }
   return non_bytes;
 }
@@ -292,24 +274,13 @@ int mem_largest_free() {
   int free_bytes = 0;
   struct memoryList *tmp = NULL;
   
-  /* Make sure head isn't null before we go through and accidentally segfault */
-  if(head != NULL) {
-
-    /* Gotta start at the head */
-    if(head->alloc == 0) {
-      free_bytes = head->size;
+  /* Go through the memory */
+  tmp = head;
+  while(tmp != NULL) {
+    if(tmp->alloc == 0 && tmp->size > free_bytes) {
+      free_bytes = tmp->size;
     }
-
-    /* Go through the memory */
-    tmp = head;
-    while(tmp->next != NULL) {
-      if(tmp->alloc == 0) {
-	if(tmp->size > free_bytes) {
-	  free_bytes = tmp->size;
-	}
-      }
-      tmp = tmp->next;
-    }
+    tmp = tmp->next;
   }
   return free_bytes;
 }
@@ -318,12 +289,13 @@ int mem_largest_free() {
 int mem_small_free(int size) {
   int holes = 0;
   struct memoryList *tmp = NULL;
-
+  
   /* Go through the memory */
   tmp = head;
   while(tmp != NULL) {
-    if(!tmp->alloc && tmp->size < size) {
-      holes++;
+    if(tmp->alloc == 0 && tmp->size < size) {
+	free_blocks++;
+      }
     }
     tmp = tmp->next;
   }
@@ -333,7 +305,7 @@ int mem_small_free(int size) {
 char mem_is_alloc(void *ptr) {
   struct memoryList *tmp = head;
   
-  while(tmp->next != NULL){
+  while(tmp != NULL){
     if(tmp->ptr == ptr){
       return tmp->alloc;
     }

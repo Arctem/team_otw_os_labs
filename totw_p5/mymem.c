@@ -114,6 +114,7 @@ void *mymalloc(size_t requested)
 	  }
 	}
       }
+      free(to_use);
       return NULL;
     case Best:
       if(head != NULL){
@@ -138,6 +139,7 @@ void *mymalloc(size_t requested)
       if(to_use != NULL){
 	to_use->alloc = 1;
       }
+      free(to_use);
       return NULL;
     case Worst:
       if(head != NULL){
@@ -162,8 +164,10 @@ void *mymalloc(size_t requested)
       if(to_use != NULL){
 	to_use->alloc = 1;
       }
+      free(to_use);
       return NULL;
     case Next:
+      free(to_use);
       return NULL;
   }
   

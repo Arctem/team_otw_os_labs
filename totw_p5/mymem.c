@@ -115,7 +115,7 @@ void *mymalloc(size_t requested) {
   case Best:
     tmp = head;
     while(tmp != NULL) {
-      if((!tmp->alloc && tmp->size >= requested) && (!to_use || tmp->size > to_use->size)) {
+      if((!tmp->alloc && tmp->size >= requested) && (!to_use || tmp->size < to_use->size)) {
 	to_use = tmp;
       }
       tmp = tmp->next;
@@ -124,7 +124,7 @@ void *mymalloc(size_t requested) {
   case Worst:
     tmp = head;
     while(tmp != NULL) {
-      if((!tmp->alloc && tmp->size >= requested) && (!to_use || tmp->size < to_use->size)) {
+      if((!tmp->alloc && tmp->size >= requested) && (!to_use || tmp->size > to_use->size)) {
 	to_use = tmp;
       }
       tmp = tmp->next;

@@ -13,7 +13,7 @@
 struct memoryList
 {
   // doubly-linked list
-  struct memoryList *prev; /* prev makes more sense to me than last. */
+  struct memoryList *prev;
   struct memoryList *next;
 
   int size;            // How many bytes in this block?
@@ -29,6 +29,9 @@ size_t mySize;
 void *myMemory = NULL;
 
 static struct memoryList *head;
+
+/* for next-fit, this points to the next block */
+/* for others, it points to the first unused block*/
 static struct memoryList *next;
 
 /* For releasing memory in initmem */
@@ -42,12 +45,12 @@ void release() {
 
 /* For initializing memory initmem */
 void initialize(){
-  if(head == NULL){
-    /*Put something here*/
-  }
-  if(next == NULL){
-    /*Put something here, or put into head*/
-  }
+  head = malloc(sizeof(struct memoryList));
+  head->prev = head->next = NULL;
+  head->alloc = 0;
+  head->ptr = myMemory;
+
+  next = head;
 }
 
 /* initmem must be called prior to mymalloc and myfree.

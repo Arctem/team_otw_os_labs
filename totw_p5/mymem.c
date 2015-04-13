@@ -93,19 +93,73 @@ void initmem(strategies strategy, size_t sz) {
 
 void *mymalloc(size_t requested) {
   assert((int)myStrategy > 0);
+
+  struct memoryList *to_use = NULL; /*Which chunk of memory are we going to use?*/
 	
   switch (myStrategy)
   {
-    case NotSet: 
-      return NULL;
-    case First:
-      return NULL;
-    case Best:
-      return NULL;
-    case Worst:
-      return NULL;
-    case Next:
-      return NULL;
+  case NotSet: 
+    return NULL;
+  case First:
+    if(head != NULL) {
+      if(head->size >= requested && head->alloc == 0) {
+	head->alloc = 1;
+      } else {
+	next = head->next;
+	while(next->next != NULL) {
+	  if(next->size >= requested && next->alloc == 0) {
+	    next->alloc = 1;
+	  }
+	}
+      }
+    }
+    return NULL;
+  case Best:
+    if(head != NULL) {
+      if(head->size >= requested && head->alloc == 0) {
+	to_use = head;
+      }
+      
+      else {
+	next = head->next;
+	while(next->next != NULL) {
+	  if(next->size >= requested && next->alloc == 0) {
+	    if(to_use != NULL && next->size < to_use->size) {
+	      to_use = next;
+	    }
+	    else {
+	      to_use = next;
+	    }
+	  }
+	}
+      }
+    }
+    if(to_use != NULL) {
+      to_use->alloc = 1;
+    }
+    return NULL;
+  case Worst:
+    if(head != NULL) {
+      if(head->size >= requested && head->alloc == 0) {
+	to_use = head;
+      } else {
+	next = head->next;
+	while(next->next != NULL) {
+	  if(next->size >= requested && next->alloc == 0) {
+	    if(to_use != NULL && next->size > to_use->size) {
+	      to_use = next;
+	    } else {
+	      to_use = next;
+	    }
+	  }
+	}
+      }
+    }
+    if(to_use != NULL) {
+      to_use->alloc = 1;
+    }
+  case Next:
+    return NULL;
   }
   
   return NULL;

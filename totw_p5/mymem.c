@@ -176,6 +176,30 @@ void *mymalloc(size_t requested) {
 }
 
 
+/* Merges adjacent freed blocks into a single block */
+void merge_blocks(struct memoryList *block) {
+  struct memoryList *tmp;
+
+  if(block->alloc) {
+    return;
+  } else {
+    while(block->prev && !block->prev->alloc) {
+      /* merge backwards */
+      tmp = block->prev;
+      block->size += tmp->size;
+      block->prev = tmp->prev;
+      free(tmp);
+    }
+    while(block->next && !block->next->alloc) {
+      /* merge forwards */
+      tmp = block->next;
+      block->size += tmp->size;
+      block->next = tmp->next;
+      free(tmp);
+    }
+  }
+}
+
 /* Frees a block of memory previously allocated by mymalloc. */
 void myfree(void* block) {
   struct memoryList *tmp = head;
@@ -183,7 +207,9 @@ void myfree(void* block) {
   /*Go through memory to find the thing to free*/
   while(tmp != NULL) {
     if(tmp->ptr == block) {
-      tmp->alloc = '0';
+      tmp->alloc = 0;
+      merge_blocks(tmp);
+      return;
     }
     tmp = tmp->next;
   }

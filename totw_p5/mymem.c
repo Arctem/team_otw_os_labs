@@ -30,23 +30,14 @@ void *myMemory = NULL;
 
 static struct memoryList *head;
 static struct memoryList *next;
-static struct memoryList *tmp;
 
 /* For releasing memory in initmem */
-void release(){
-  
-  if(head != NULL){
-    head->alloc = '0';
-  
-    while(head->next != NULL) {
-      tmp = head;
-      head->next->alloc = '0';
-      head = head->next;
-      tmp = NULL;
-    }
+void release() {
+  while(head != NULL) {
+    struct memoryList *tmp = head;
+    head = head->next;
+    free(tmp);
   }
-  /*Else shouldn't have to do anything I think?*/
-  /*Double check before finishing*/
 }
 
 /* For initializing memory initmem */
@@ -80,7 +71,8 @@ void initmem(strategies strategy, size_t sz)
   /* all implementations will need an actual block of memory to use */
   mySize = sz;
 
-  if (myMemory != NULL) free(myMemory); /* in case this is not the first time initmem2 is called */
+  if (myMemory != NULL)
+    free(myMemory); /* in case this is not the first time initmem2 is called */
 
   /* TODO: release any other memory you were using for bookkeeping when doing a re-initialization! */
   release();
@@ -182,6 +174,8 @@ void *mymalloc(size_t requested)
 /* Frees a block of memory previously allocated by mymalloc. */
 void myfree(void* block)
 {
+  struct memoryList *tmp = NULL;
+  
   if(head != NULL){
     tmp = head;
     /*Go through memory to find the thing to free*/
@@ -205,6 +199,7 @@ void myfree(void* block)
 int mem_holes()
 {
   int holes = 0;
+  struct memoryList *tmp = NULL;
   /* Make sure head isn't null before we go through and accidentally segfault */
   if(head != NULL) {
 
@@ -229,6 +224,8 @@ int mem_holes()
 int mem_allocated()
 {
   int allocated_bytes = 0;
+  struct memoryList *tmp = NULL;
+  
   /* Make sure head isn't null before we go through and accidentally segfault */
   if(head != NULL) {
 
@@ -253,6 +250,8 @@ int mem_allocated()
 int mem_free()
 {
   int non_bytes = 0;
+  struct memoryList *tmp = NULL;
+  
   /* Make sure head isn't null before we go through and accidentally segfault */
   if(head != NULL) {
 
@@ -277,6 +276,8 @@ int mem_free()
 int mem_largest_free()
 {
   int free_bytes = 0;
+  struct memoryList *tmp = NULL;
+  
   /* Make sure head isn't null before we go through and accidentally segfault */
   if(head != NULL) {
 
@@ -303,6 +304,8 @@ int mem_largest_free()
 int mem_small_free(int size)
 {
   int free_blocks = 0;
+  struct memoryList *tmp = NULL;
+    
   /* Make sure head isn't null before we go through and accidentally segfault */
   if(head != NULL) {
 
@@ -329,7 +332,8 @@ int mem_small_free(int size)
 
 char mem_is_alloc(void *ptr)
 {
-  tmp = head;
+  struct memoryList *tmp = head;
+  
   while(tmp->next != NULL){
     if(tmp->ptr == ptr){
       return tmp->alloc;

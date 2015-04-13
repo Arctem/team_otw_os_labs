@@ -149,11 +149,28 @@ void *mymalloc(size_t requested) {
     break;
   }
 
-  if(!to_use) {
-    return NULL;
-  } else {
-    /* split it up if necessary, then return the block */
+  if(to_use) {
+    if(to_use->size == requested) {
+      /* simple case, no splitting needed */
+      to_use->alloc = 1;
+      return to_use;
+    } else {
+      /* allocate what's needed, but create a new entry for the rest */
+      int extra = to_use->size - requested;
+      struct memoryList *new_list = malloc(sizeof(struct memoryList));
+      new_list->next = to_use->next;
+      new_list->next->prev = new_list;
+      new_list->prev = to_use;
+      to_use->next = new_list;
+      
+      new_list->alloc = 0;
+      to_use->alloc = 1;
+      new_list->size = extra;
+      to_use->size = requested;
+      new_list->ptr = to_use->ptr + requested;
+    }
   }
+  return to_use;
 }
 
 

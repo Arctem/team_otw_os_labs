@@ -117,7 +117,7 @@ void *mymalloc(size_t requested) {
     tmp = head;
     while(tmp != NULL) {
       if((!tmp->alloc && tmp->size >= requested) && (!to_use || tmp->size > to_use->size)) {
-	head = tmp;
+	to_use = tmp;
       }
       tmp = tmp->next;
     }
@@ -126,7 +126,7 @@ void *mymalloc(size_t requested) {
     tmp = head;
     while(tmp != NULL) {
       if((!tmp->alloc && tmp->size >= requested) && (!to_use || tmp->size < to_use->size)) {
-	head = tmp;
+	to_use = tmp;
       }
       tmp = tmp->next;
     }

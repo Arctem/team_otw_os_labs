@@ -316,31 +316,18 @@ int mem_largest_free() {
 
 /* Number of free blocks smaller than "size" bytes. */
 int mem_small_free(int size) {
-  int free_blocks = 0;
+  int holes = 0;
   struct memoryList *tmp = NULL;
-    
-  /* Make sure head isn't null before we go through and accidentally segfault */
-  if(head != NULL) {
 
-    /* Gotta start at the head */
-    if(head->alloc == 0){
-      if(head->size < size){
-	free_blocks++;
-      }
+  /* Go through the memory */
+  tmp = head;
+  while(tmp != NULL) {
+    if(!tmp->alloc && tmp->size < size) {
+      holes++;
     }
-
-    /* Go through the memory */
-    tmp = head;
-    while(tmp->next != NULL){
-      if(tmp->alloc == 0){
-	if(tmp->size < size){
-	  free_blocks++;
-	}
-      }
-      tmp = tmp->next;
-    }
+    tmp = tmp->next;
   }
-  return free_blocks;
+  return holes;
 }       
 
 char mem_is_alloc(void *ptr) {

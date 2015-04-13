@@ -102,19 +102,16 @@ void *mymalloc(size_t requested) {
     return NULL;
   case First:
     if(head != NULL) {
-      if(head->size >= requested && head->alloc == 0) {
-	head->alloc = 1;
-      } else {
-	next = head->next;
-	while(next != NULL) {
-	  if(next->size >= requested && next->alloc == 0) {
-	    next->alloc = 1;
-	  }
-	  next = next->next;	  
+      to_use = head;
+      while(to_use != NULL) {
+	if(to_use->size >= requested && !to_use->alloc) {
+	  break;
+	} else {
+	  to_use = head->to_use;
 	}
       }
     }
-    return NULL;
+    break;
   case Best:
     if(head != NULL) {
       if(head->size >= requested && head->alloc == 0) {
@@ -179,8 +176,10 @@ void *mymalloc(size_t requested) {
     }
     return NULL;
   }
-  
-  return NULL;
+
+  if(!to_use) {
+    return NULL;
+  }
 }
 
 

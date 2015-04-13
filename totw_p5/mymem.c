@@ -286,6 +286,7 @@ int mem_largest_free() {
 }
 
 /* Number of free blocks smaller than "size" bytes. */
+/* NOTE: test case seems to be assuming <= rather than < */
 int mem_small_free(int size) {
   int free_blocks = 0;
   struct memoryList *tmp = NULL;
@@ -293,7 +294,7 @@ int mem_small_free(int size) {
   /* Go through the memory */
   tmp = head;
   while(tmp != NULL) {
-    if(tmp->alloc == 0 && tmp->size < size) {
+    if(!tmp->alloc && tmp->size <= size) {
       free_blocks++;
     }
     tmp = tmp->next;

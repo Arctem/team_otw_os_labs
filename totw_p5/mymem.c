@@ -132,22 +132,21 @@ void *mymalloc(size_t requested) {
     }
     break;
   case Next:
-    if(next == NULL) {
-      next = head;
-    }
-    int looped = 0;
-    while(next != NULL) {
-      if(next->size >= requested && next->alloc == 0) {
-	next->alloc = 1;
+    tmp = next;
+    
+    while(tmp != NULL) {
+      if(tmp->size >= requested && !tmp->alloc) {
+	next = to_use = tmp;
+	break;
       }
-      if(next->next == NULL && looped == 0) {
-	next = head;
-	looped = 1;
-      } else {
-	next = next->next;
-      }
+      
+      tmp = tmp->next;
+      if(!tmp)
+	tmp = head;
+      if(tmp == next)
+	break;
     }
-    return NULL;
+    break;
   }
 
   if(!to_use) {

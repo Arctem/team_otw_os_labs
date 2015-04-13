@@ -162,6 +162,21 @@ void *mymalloc(size_t requested) {
       to_use->alloc = 1;
     }
   case Next:
+    if(next == NULL) {
+      next = head;
+    }
+    while(next != NULL) {
+      if(next->size >= requested && next->alloc == 0) {
+	next->alloc = 1;
+      }
+      int looped = 0;
+      if(next->next == NULL && looped == 0) {
+	next = head;
+	looped = 1;
+      } else {
+	next = next->next;
+      }
+    }
     return NULL;
   }
   

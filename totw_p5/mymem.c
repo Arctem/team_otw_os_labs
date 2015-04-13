@@ -158,6 +158,7 @@ void *mymalloc(size_t requested) {
     if(to_use != NULL) {
       to_use->alloc = 1;
     }
+    break;
   case Next:
     if(next == NULL) {
       next = head;

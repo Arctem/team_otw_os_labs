@@ -132,9 +132,7 @@ void *mymalloc(size_t requested) {
 	      to_use = next;
 	    }
 	  }
-	  if(next->next != NULL) {
-	    next = next->next;
-	  }
+	  next = next->next;
 	}
       }
     }
@@ -156,9 +154,7 @@ void *mymalloc(size_t requested) {
 	      to_use = next;
 	    }
 	  }
-	  if(next->next != NULL) {
-	    next = next->next;
-	  }
+	  next = next->next;
 	}
       }
     }

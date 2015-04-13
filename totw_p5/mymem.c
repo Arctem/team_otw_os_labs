@@ -48,6 +48,7 @@ void initialize() {
   head = malloc(sizeof(struct memoryList));
   head->prev = head->next = NULL;
   head->alloc = 0;
+  head->size = mySize;
   head->ptr = myMemory;
 
   next = head;

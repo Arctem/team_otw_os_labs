@@ -44,7 +44,7 @@ void release() {
 }
 
 /* For initializing memory initmem */
-void initialize(){
+void initialize() {
   head = malloc(sizeof(struct memoryList));
   head->prev = head->next = NULL;
   head->alloc = 0;
@@ -67,8 +67,7 @@ void initialize(){
    sz specifies the number of bytes that will be available, in total, for all mymalloc requests.
 */
 
-void initmem(strategies strategy, size_t sz)
-{
+void initmem(strategies strategy, size_t sz) {
   myStrategy = strategy;
   
   /* all implementations will need an actual block of memory to use */
@@ -84,7 +83,6 @@ void initmem(strategies strategy, size_t sz)
 	
   /* TODO: Initialize memory management structure. */
   initialize();
-
 }
 
 /* Allocate a block of memory with the requested size.
@@ -93,8 +91,7 @@ void initmem(strategies strategy, size_t sz)
  *  Restriction: requested >= 1 
  */
 
-void *mymalloc(size_t requested)
-{
+void *mymalloc(size_t requested) {
   assert((int)myStrategy > 0);
 	
   switch (myStrategy)
@@ -116,8 +113,7 @@ void *mymalloc(size_t requested)
 
 
 /* Frees a block of memory previously allocated by mymalloc. */
-void myfree(void* block)
-{
+void myfree(void* block) {
   struct memoryList *tmp = NULL;
   
   if(head != NULL){
@@ -140,8 +136,7 @@ void myfree(void* block)
  */
 
 /* Get the number of contiguous areas of free space in memory. */
-int mem_holes()
-{
+int mem_holes() {
   int holes = 0;
   struct memoryList *tmp = NULL;
   /* Make sure head isn't null before we go through and accidentally segfault */
@@ -165,8 +160,7 @@ int mem_holes()
 }
 
 /* Get the number of bytes allocated */
-int mem_allocated()
-{
+int mem_allocated() {
   int allocated_bytes = 0;
   struct memoryList *tmp = NULL;
   
@@ -191,8 +185,7 @@ int mem_allocated()
 }
 
 /* Number of non-allocated (a.k.a. free) bytes */
-int mem_free()
-{
+int mem_free() {
   int non_bytes = 0;
   struct memoryList *tmp = NULL;
   
@@ -217,8 +210,7 @@ int mem_free()
 }
 
 /* Number of bytes in the largest contiguous area of unallocated memory */
-int mem_largest_free()
-{
+int mem_largest_free() {
   int free_bytes = 0;
   struct memoryList *tmp = NULL;
   
@@ -245,8 +237,7 @@ int mem_largest_free()
 }
 
 /* Number of free blocks smaller than "size" bytes. */
-int mem_small_free(int size)
-{
+int mem_small_free(int size) {
   int free_blocks = 0;
   struct memoryList *tmp = NULL;
     
@@ -274,8 +265,7 @@ int mem_small_free(int size)
   return free_blocks;
 }       
 
-char mem_is_alloc(void *ptr)
-{
+char mem_is_alloc(void *ptr) {
   struct memoryList *tmp = head;
   
   while(tmp->next != NULL){
@@ -294,23 +284,19 @@ char mem_is_alloc(void *ptr)
 
 
 //Returns a pointer to the memory pool.
-void *mem_pool()
-{
+void *mem_pool() {
   return myMemory;
 }
 
 // Returns the total number of bytes in the memory pool. */
-int mem_total()
-{
+int mem_total() {
   return mySize;
 }
 
 
 // Get string name for a strategy. 
-char *strategy_name(strategies strategy)
-{
-  switch (strategy)
-  {
+char *strategy_name(strategies strategy) {
+  switch (strategy) {
     case Best:
       return "best";
     case Worst:
@@ -325,26 +311,16 @@ char *strategy_name(strategies strategy)
 }
 
 // Get strategy from name.
-strategies strategyFromString(char * strategy)
-{
-  if (!strcmp(strategy,"best"))
-  {
+strategies strategyFromString(char * strategy) {
+  if (!strcmp(strategy,"best")) {
     return Best;
-  }
-  else if (!strcmp(strategy,"worst"))
-  {
+  } else if (!strcmp(strategy,"worst")) {
     return Worst;
-  }
-  else if (!strcmp(strategy,"first"))
-  {
+  } else if (!strcmp(strategy,"first")) {
     return First;
-  }
-  else if (!strcmp(strategy,"next"))
-  {
+  } else if (!strcmp(strategy,"next")) {
     return Next;
-  }
-  else
-  {
+  } else {
     return 0;
   }
 }
@@ -356,8 +332,7 @@ strategies strategyFromString(char * strategy)
  */
 
 /* Use this function to print out the current contents of memory. */
-void print_memory()
-{
+void print_memory() {
   return;
 }
 
@@ -365,8 +340,7 @@ void print_memory()
  * This function does not depend on your implementation, 
  * but on the functions you wrote above.
  */ 
-void print_memory_status()
-{
+void print_memory_status() {
   printf("%d out of %d bytes allocated.\n",mem_allocated(),mem_total());
   printf("%d bytes are free in %d holes; maximum allocatable block is %d bytes.\n",mem_free(),mem_holes(),mem_largest_free());
   printf("Average hole size is %f.\n\n",((float)mem_free())/mem_holes());
@@ -400,5 +374,4 @@ void try_mymem(int argc, char **argv) {
 	
   print_memory();
   print_memory_status();
-	
 }

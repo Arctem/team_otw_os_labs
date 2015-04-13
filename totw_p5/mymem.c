@@ -98,19 +98,16 @@ void *mymalloc(size_t requested) {
   struct memoryList *to_use = NULL; /*Which chunk of memory are we going to use?*/
   struct memoryList *tmp = NULL; /* Some will use this */
 	
-  switch (myStrategy)
-  {
+  switch (myStrategy) {
   case NotSet: 
     return NULL;
   case First:
-    if(head != NULL) {
-      to_use = head;
-      while(to_use != NULL) {
-	if(to_use->size >= requested && !to_use->alloc) {
-	  break;
-	} else {
-	  to_use = head->next;
-	}
+    to_use = head;
+    while(to_use != NULL) {
+      if(to_use->size >= requested && !to_use->alloc) {
+	break;
+      } else {
+	to_use = head->next;
       }
     }
     break;
@@ -170,24 +167,22 @@ void *mymalloc(size_t requested) {
       to_use->size = requested;
       new_list->ptr = to_use->ptr + requested;
     }
-  }
-  return to_use;
+    return to_use->ptr;
+  } else
+    return NULL;
 }
 
 
 /* Frees a block of memory previously allocated by mymalloc. */
 void myfree(void* block) {
-  struct memoryList *tmp = NULL;
+  struct memoryList *tmp = head;
   
-  if(head != NULL){
-    tmp = head;
-    /*Go through memory to find the thing to free*/
-    while(tmp->next != NULL){
-      if(tmp->ptr == block){
-	tmp->alloc = '0';
-      }
-      tmp = tmp->next;
+  /*Go through memory to find the thing to free*/
+  while(tmp != NULL) {
+    if(tmp->ptr == block) {
+      tmp->alloc = '0';
     }
+    tmp = tmp->next;
   }
 }
 

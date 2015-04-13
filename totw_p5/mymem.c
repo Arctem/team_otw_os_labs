@@ -225,22 +225,14 @@ void myfree(void* block) {
 int mem_holes() {
   int holes = 0;
   struct memoryList *tmp = NULL;
-  /* Make sure head isn't null before we go through and accidentally segfault */
-  if(head != NULL) {
 
-    /* Gotta start at the head */
-    if(head->alloc == 0){
+  /* Go through the memory */
+  tmp = head;
+  while(tmp != NULL){
+    if(!tmp->alloc){
       holes++;
     }
-
-    /* Go through the memory */
-    tmp = head;
-    while(tmp->next != NULL){
-      if(tmp->alloc == 0){
-	holes++;
-      }
-      tmp = tmp->next;
-    }
+    tmp = tmp->next;
   }
   return holes;
 }

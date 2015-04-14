@@ -141,7 +141,6 @@ void *mymalloc(size_t requested) {
     if(to_use->size == requested) {
       /* simple case, no splitting needed */
       to_use->alloc = 1;
-      return to_use->ptr;
     } else {
       /* allocate what's needed, but create a new entry for the rest */
       int extra = to_use->size - requested;
@@ -171,7 +170,10 @@ void *mymalloc(size_t requested) {
 	  next = next->next;
 	}
       }
-    
+      if(next == to_use)
+	next = head;
+      printf("U: %p,%d,%d\t", to_use->ptr, to_use->alloc, to_use->size);
+      printf("N: %p,%d,%d\n", next->ptr, next->alloc, next->size);
     }
     return to_use->ptr;
   } else

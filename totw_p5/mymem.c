@@ -133,6 +133,9 @@ void *mymalloc(size_t requested) {
     }
     break;
   case Next:
+    while(next->alloc) {
+      next = next->next;
+    }
     to_use = next;
     break;
   }

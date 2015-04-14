@@ -198,6 +198,9 @@ void merge_blocks(struct memoryList *block) {
       tmp = block->next;
       block->size += tmp->size;
       block->next = tmp->next;
+      if(tmp->next) {
+	tmp->next->prev = block;
+      }
       if(next == tmp) {
 	next = block;
       }

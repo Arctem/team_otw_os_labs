@@ -173,14 +173,14 @@ void *mymalloc(size_t requested) {
 	  next = next->next;
 	}
       }
-      if(next == to_use)
+      if(next == to_use) {
 	next = head;
-      printf("U: %p,%d,%d\t", to_use->ptr, to_use->alloc, to_use->size);
-      printf("N: %p,%d,%d\n", next->ptr, next->alloc, next->size);
+      }
     }
     return to_use->ptr;
-  } else
+  } else {
     return NULL;
+  }
 }
 
 

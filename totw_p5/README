@@ -1,0 +1,79 @@
+Team Omega Tiger Woods OS Lab Project 5
+Andrew Baker
+Russell White
+
+INTRODUCTION
+---------------------------------------------------------------------------------
+The purpose of this project is to implement malloc() and free(), two functions
+that are found in the C standard library that allocate and free memory
+respectively. We were given a structure that simulates a block of memory, test
+cases, and some code outlining what we were supposed to implement. Although we
+were allowed to edit only the "mymem.c" file, we modified some of the other files
+to match how we spaced out everything (such as using 2 spaces instead of 8 for
+indenting).
+
+COMPILATION
+---------------------------------------------------------------------------------
+To compile this program, run "make" to compile all files and produce a proper
+executable. There is also an option for "make test" and "make stage1-test", but
+these fail and are explained in the bugs section.
+
+COMMAND EXPLANATION
+---------------------------------------------------------------------------------
+To run this program, at least 2 arguments must be supplied. The first is whether
+to run the included tests ("-test"), or to try ("-try") a custom test.
+
+Using "-test" requires 2 or 3 more arguments. Optionally, "-f0" to continue
+testing after any failed tests. Next, what tests to run, which can be "all",
+"alloc1", "alloc2", "alloc3", "alloc4", or "stress". Finally, what strategy to
+use, which can be "all" (which does only one strategy), "first", "best", "worst",
+or "next".
+
+Using "-try" requires one more argument, which strategy to use (same as above
+except for "all").
+
+DATA STRUCTURES
+---------------------------------------------------------------------------------
+We used the provided doubly-linked list for our memory. This list contains
+pointers to the previous and next elements in the list, an integer for how big
+the block of memory is, a character indicating whether the block is free or not,
+and a void pointer for where the block is located.
+
+We created many functions to handle memory, and give information about the
+memory. First is "initmem", which takes a strategy and size as input. This calls
+two functions: "release" and "initialize". "release" frees all memory being used,
+and "initialize" initializes the memory. Next is "mymalloc", which takes in the
+requested memory size as input. This uses whichever strategy has been specified,
+and allocates memory according to such strategy. Next is "myfree", which frees a
+specified block of memory. This uses "merge_blocks", which merges adjacent free
+blocks into one block. Next is "mem_holes", which gets the number of contiguous
+areas of free space in memory. Next is "mem_allocated", which gets the number of
+allocated bytes. Next is "mem_free", which gets the number of free bytes. Next is
+"mem_largest_free", which gets the number of bytes of the largest free area in
+memory. Next is "mem_small_free", which takes a size as input, and finds out how
+many blocks there are that are less than or equal to that size. Finally, there is
+"mem_is_alloc", which takes a void pointer as input and checks to see if that
+block is allocated or not.
+
+DIAGRAMS AND EXPLANATION
+---------------------------------------------------------------------------------
+Provided are diagrams showing the test cases in action, and how it performed.
+These files are:
+best.png : Testing each test with the best-fit strategy. 5/5 passed.
+first.png : Testing each test with the first-fit strategy. 5/5 passed.
+next.png : Testing each test with the next-fit strategy. 5/5 passed.
+worst.png : Testing each test with the worst-fit strategy. 5/5 passed.
+
+TESTING PLAN / RESULTS
+---------------------------------------------------------------------------------
+In order to test this, we ran each test against each strategy. The results were
+that each strategy passed each test perfectly. Running each test with "-try"
+yielded 175/500 bytes allocated (325/500 free). Both the first and best
+strategies ahd 3 holes, and next and worst had 2 holes. All strategies other than
+worst had a maximum allocatable block of 200 bytes (worst had 175).
+
+BUGS
+---------------------------------------------------------------------------------
+The only bug we have is with running "make test" and "make stage1-test", which
+both report "mem: Command not found". However, this is part of the makefile, and
+we were not allowed to edit that.

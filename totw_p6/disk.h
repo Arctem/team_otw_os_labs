@@ -11,6 +11,15 @@
 #define DISK_BLOCKS  8192      /* number of blocks on the disk                */
 #define BLOCK_SIZE   4096      /* block size on "disk"                        */
 
+typedef struct file_meta_t {
+  char name[25]; /* name of the file, not null-terminated */
+  short num_blocks; /* how many blocks the file uses */
+  short size_last; /* how much of the last block is in use */
+} file_meta;
+typedef struct block_list_t {
+  short block[4096 / 2];
+} block_list;
+
 /******************************************************************************/
 int make_disk(char *name);     /* create an empty, virtual disk file          */
 int open_disk(char *name);     /* open a virtual disk (file)                  */

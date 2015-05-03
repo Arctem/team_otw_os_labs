@@ -1,9 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <string.h>
-
 #include "disk.h"
 
 /******************************************************************************/
@@ -11,8 +5,7 @@ static int active = 0;  /* is the virtual disk open (active) */
 static int handle;      /* file handle to virtual disk       */
 
 /******************************************************************************/
-int make_disk(char *name)
-{ 
+int make_disk(char *name) {
   int f, cnt;
   char buf[BLOCK_SIZE];
 
@@ -35,8 +28,7 @@ int make_disk(char *name)
   return 0;
 }
 
-int open_disk(char *name)
-{
+int open_disk(char *name) {
   int f;
 
   if (!name) {
@@ -60,8 +52,7 @@ int open_disk(char *name)
   return 0;
 }
 
-int close_disk()
-{
+int close_disk() {
   if (!active) {
     fprintf(stderr, "close_disk: no open disk\n");
     return -1;
@@ -74,8 +65,7 @@ int close_disk()
   return 0;
 }
 
-int block_write(int block, char *buf)
-{
+int block_write(int block, char *buf) {
   if (!active) {
     fprintf(stderr, "block_write: disk not active\n");
     return -1;
@@ -99,8 +89,7 @@ int block_write(int block, char *buf)
   return 0;
 }
 
-int block_read(int block, char *buf)
-{
+int block_read(int block, char *buf) {
   if (!active) {
     fprintf(stderr, "block_read: disk not active\n");
     return -1;

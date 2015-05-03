@@ -2,23 +2,18 @@ CC = clang
 CCOPTS = -Wall -c -g -ggdb
 LINKOPTS = -Wall -g -ggdb -lpthread
 
-EXEC=test
-OBJECTS=disk.o
+all: test
 
-all: $(EXEC)
-
-$(EXEC): $(OBJECTS)
-	$(CC) $(LINKOPTS) -o $@ $^
-
-#%.o:%.c
-#	$(CC) $(CCOPTS) -o $@ $^
+test: test.c disk.o
+	$(CC) $(LINKOPTS) -o $@ test.c disk.o
 
 disk.o: disk.c disk.h
 	$(CC) $(CCOPTS) -o $@ disk.c
 
+tar: totw_p6.tgz
+
+totw_p6.tgz:
+	tar -czvf totw_p6.tgz Makefile README disk.c disk.h test.c
+
 clean:
-	- $(RM) $(EXEC)
-	- $(RM) $(OBJECTS)
-	- $(RM) *~
-	- $(RM) core.*
-	- $(RM) lab4.in lab4.out lab4.err
+	rm *.o

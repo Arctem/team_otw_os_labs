@@ -11,6 +11,10 @@
 #define DISK_BLOCKS  8192      /* number of blocks on the disk                */
 #define BLOCK_SIZE   4096      /* block size on "disk"                        */
 
+
+typedef struct block_map_t {
+  char block[4096];
+} block_map;
 typedef struct file_meta_t {
   char name[25]; /* name of the file, not null-terminated */
   short num_blocks; /* how many blocks the file uses */

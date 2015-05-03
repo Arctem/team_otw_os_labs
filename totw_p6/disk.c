@@ -161,8 +161,6 @@ int mount_fs(char* disk_name) {
     return -1;
   }
 
-  active = 1;  
-
   return 0;
 }
 
@@ -179,37 +177,73 @@ int umount_fs(char* disk_name) {
 
 /* File functions, file system should be mounted first */
 int fs_open(char *name) {
+  if(active == 0) {
+    return -1;
+  }
+  
   return 0;
 }
 
 int fs_close(int filedes) {
+  if(active == 0) {
+    return -1;
+  }
+  
   return 0;
 }
 
 int fs_create(char *name) {
+  if(active == 0) {
+    return -1;
+  }
+
   return 0;
 }
 
 int fs_delete(char *name) {
+  if(active == 0) {
+    return -1;
+  }
+
   return 0;
 }
 
 int fs_read(int fildes, void *buf, size_t nbyte) {
+  if(active == 0) {
+    return -1;
+  }
+
   return 0;
 }
 
 int fs_write(int fildes, void *buf, size_t nbyte) {
+  if(active == 0) {
+    return -1;
+  }
+
   return 0;
 }
 
 int fs_get_filesize(int fildes) {
+  if(active == 0) {
+    return -1;
+  }
+
   return 0;
 }
 
 int fs_lseek(int fildes, off_t offset) {
+  if(active == 0) {
+    return -1;
+  }
+
   return 0;
 }
 
 int fs_truncate(int fildes, off_t length) {
+  if(active == 0) {
+    return -1;
+  }
+
   return 0;
 }

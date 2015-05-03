@@ -169,6 +169,16 @@ int fs_open(char *name) {
   if(active == 0) {
     return -1;
   }
+
+  file_meta tmp = file_meta_thingy;
+  
+  while(tmp != NULL) {
+    if(strcmp(tmp.name,name) == 0) {
+      /*TODO: open the file*/
+      break;
+    }
+    tmp = tmp->next;
+  }
   
   return 0;
 }

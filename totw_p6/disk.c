@@ -123,3 +123,93 @@ int block_read(int block, char *buf)
 
   return 0;
 }
+
+/*File system management functions*/
+
+/*Make the file system*/
+int make_fs(char* disk_name) {
+  int disk = make_disk(disk_name);
+
+  /*If there was an error making the disk, cannot make the file system.*/
+  if(disk == -1) {
+    return -1;
+  }
+
+  disk = open_disk(disk_name);
+  if(disk == -1) {
+    return -1;
+  }
+
+  /*How are we going to implement our file system?*/
+
+  /*Write/initialize meta-info for fs to be mounted*/
+
+  /*Made the disk, better close it now*/
+  disk = close_disk(disk_name);
+  if(disk == -1) {
+    return -1;
+  }
+  
+  return 0;
+}
+
+int mount_fs(char* disk_name) {
+  
+  /*Open the disk and make it active*/
+  int disk = open_disk(disk_name);
+  if(disk == -1) {
+    return -1;
+  }
+
+  active = 1;  
+
+  return 0;
+}
+
+int umount_fs(char* disk_name) {
+  /*write last bit of stuff to it*/
+
+  int disk = close_disk(disk_name);
+  if(disk == -1) {
+    return -1;
+  }
+
+  return 0;
+}
+
+/* File functions, file system should be mounted first */
+int fs_open(char *name) {
+  return 0;
+}
+
+int fs_close(int filedes) {
+  return 0;
+}
+
+int fs_create(char *name) {
+  return 0;
+}
+
+int fs_delete(char *name) {
+  return 0;
+}
+
+int fs_read(int fildes, void *buf, size_t nbyte) {
+  return 0;
+}
+
+int fs_write(int fildes, void *buf, size_t nbyte) {
+  return 0;
+}
+
+int fs_get_filesize(int fildes) {
+  return 0;
+}
+
+int fs_lseek(int fildes, off_t offset) {
+  return 0;
+}
+
+int fs_truncate(int fildes, off_t length) {
+  return 0;
+}

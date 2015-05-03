@@ -24,7 +24,7 @@ typedef struct block_list_t {
   short block[4096 / 2];
 } block_list;
 
-/******************************************************************************/
+/********************* PROVIDED FUNCTIONS *************************************/
 int make_disk(char *name);     /* create an empty, virtual disk file          */
 int open_disk(char *name);     /* open a virtual disk (file)                  */
 int close_disk();              /* close a previously opened disk (file)       */
@@ -33,9 +33,10 @@ int block_write(int block, char *buf);
                                /* write a block of size BLOCK_SIZE to disk    */
 int block_read(int block, char *buf);
                                /* read a block of size BLOCK_SIZE from disk   */
-/******************************************************************************/
+/********************* PROVIDED FUNCTIONS *************************************/
 
-/* File system structure:
+/******************************************************************************
+ * File system structure:
  * 4096 blocks of "meta" (most unused).
  * 4096 blocks of data (use depends on files that have been created).
  *
@@ -60,7 +61,7 @@ int block_read(int block, char *buf);
  * for a file to potentially use up all 4096 data blocks. Theoretically all entries past
  * the number of blocks indicated by the grou's info block should be 0, but they will
  * be ignored so their exact value should not be important.
- */
+ ******************************************************************************/
 
 int make_fs(char* disk_name); /* make a file system */
 int mount_fs(char* disk_name); /* mount a file system */

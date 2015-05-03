@@ -145,7 +145,7 @@ int make_fs(char* disk_name) {
   /*Write/initialize meta-info for fs to be mounted*/
 
   /*Made the disk, better close it now*/
-  disk = close_disk(disk_name);
+  disk = close_disk();
   if(disk == -1) {
     return -1;
   }
@@ -167,7 +167,7 @@ int mount_fs(char* disk_name) {
 int umount_fs(char* disk_name) {
   /*write last bit of stuff to it*/
 
-  int disk = close_disk(disk_name);
+  int disk = close_disk();
   if(disk == -1) {
     return -1;
   }

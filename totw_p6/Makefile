@@ -19,7 +19,7 @@ fsutil.o: fsutil.c fsutil.h
 tar: totw_p6.tgz
 
 totw_p6.tgz:
-	tar -czvf totw_p6.tgz Makefile README disk.c disk.h test.c fs.c fs.h
+	tar -czvf totw_p6.tgz Makefile README disk.c disk.h test.c fs.c fs.h fsutil.c fsutil.h
 
 clean:
 	rm *.o

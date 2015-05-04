@@ -117,10 +117,12 @@ int block_read(int block, char *buf) {
 
 /*Make the file system*/
 int make_fs(char* disk_name) {
-  int disk = make_disk(disk_name);
+  int disk = 0;
+  int i = 0;
+  char empty[BLOCK_SIZE] = {0};
 
   /*If there was an error making the disk, cannot make the file system.*/
-  if(disk == -1) {
+  if(make_disk(disk_name) == -1) {
     return -1;
   }
 
@@ -129,11 +131,11 @@ int make_fs(char* disk_name) {
     return -1;
   }
 
-  /*How are we going to implement our file system?*/
+  /* Zero out everything. */
+  for(i = 0; i < DISK_BLOCKS; i++) {
+    block_write(i, empty);
+  }
 
-  /*Write/initialize meta-info for fs to be mounted*/
-
-  /*Made the disk, better close it now*/
   disk = close_disk();
   if(disk == -1) {
     return -1;
@@ -170,15 +172,15 @@ int fs_open(char *name) {
     return -1;
   }
 
-  file_meta tmp = file_meta_thingy;
+  /* file_meta tmp = file_meta_thingy; */
   
-  while(tmp != NULL) {
-    if(strcmp(tmp.name,name) == 0) {
-      /*TODO: open the file*/
-      break;
-    }
-    tmp = tmp->next;
-  }
+  /* while(tmp != NULL) { */
+  /*   if(strcmp(tmp.name,name) == 0) { */
+  /*     /\*TODO: open the file*\/ */
+  /*     break; */
+  /*   } */
+  /*   tmp = tmp->next; */
+  /* } */
   
   return 0;
 }

@@ -13,7 +13,7 @@
 
 
 typedef struct block_map_t {
-  char block[4096];
+  char block[BLOCK_SIZE];
 } block_map;
 typedef struct file_meta_t {
   char name[25]; /* name of the file, not null-terminated */
@@ -21,7 +21,7 @@ typedef struct file_meta_t {
   short size_last; /* how much of the last block is in use */
 } file_meta;
 typedef struct block_list_t {
-  short block[4096 / 2];
+  short block[DISK_BLOCKS / 4];
 } block_list;
 
 /********************* PROVIDED FUNCTIONS *************************************/

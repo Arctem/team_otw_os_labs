@@ -198,6 +198,10 @@ int mount_fs(char* disk_name) {
 int umount_fs(char* disk_name) {
   /*write last bit of stuff to it*/
 
+  /* free the various structures */
+  free(usage);
+  free(file_metas);
+
   if(close_disk() == -1) {
     return -1;
   }

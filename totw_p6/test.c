@@ -1,6 +1,7 @@
 #include <assert.h>
 
 #include "disk.h"
+#include "fs.h"
 
 int main(int argc, char* argv[]) {
   assert(make_fs("disk.dat") == 0);

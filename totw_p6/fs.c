@@ -231,6 +231,7 @@ int fs_read(int fildes, void *buf, size_t nbyte) {
     desc->cursor += dist;
   }
 
+  free(data);
   return read;
 }
 

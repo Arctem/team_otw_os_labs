@@ -3,6 +3,7 @@
 extern int active;
 short *usage = NULL;    /* tracks which blocks are in use    */
 file_meta *file_metas = NULL;
+char descriptors[OPEN_FILES] = {-1};
 
 /*File system management functions*/
 
@@ -100,21 +101,28 @@ int umount_fs(char* disk_name) {
 
 /* File functions, file system should be mounted first */
 int fs_open(char *name) {
+  int i = 0;
   if(active == 0) {
     return -1;
   }
 
-  /* file_meta tmp = file_meta_thingy; */
+  int file_num = -1;
+  for(i = 0; i < NUM_FILES; i++) {
+    if(file_metas[i].in_use && strncmp(file_metas[i].name, name, 25)) {
+      file_num = i;
+      break;
+    }
+  }
+  if(file_num != -1) {
+    for(i = 0; i < OPEN_FILES; i++) {
+      if(!descriptors[i]) {
+	descriptors[i] = file_num;
+	return i;
+      }
+    }
+  }
   
-  /* while(tmp != NULL) { */
-  /*   if(strcmp(tmp.name,name) == 0) { */
-  /*     /\*TODO: open the file*\/ */
-  /*     break; */
-  /*   } */
-  /*   tmp = tmp->next; */
-  /* } */
-  
-  return 0;
+  return -1;
 }
 
 int fs_close(int filedes) {

@@ -5,7 +5,8 @@
 
 #include "disk.h"
 
-#define NUM_FILES    64        /* the max allowed number of files on the disk */
+#define NUM_FILES 64        /* the max allowed number of files on the disk */
+#define OPEN_FILES 32       /* the max allowed number of file descriptors */
 
 typedef struct file_meta_t {
   char in_use;

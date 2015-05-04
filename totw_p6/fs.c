@@ -123,11 +123,12 @@ int fs_open(char *name) {
 
   int file_num = -1;
   for(i = 0; i < NUM_FILES; i++) {
-    if(file_metas[i].in_use && strncmp(file_metas[i].name, name, NAMELEN)) {
+    if(file_metas[i].in_use && strncmp(file_metas[i].name, name, NAMELEN) == 0) {
       file_num = i;
       break;
     }
   }
+
   if(file_num != -1) {
     for(i = 0; i < OPEN_FILES; i++) {
       if(descriptors[i].file == -1) {

@@ -3,7 +3,7 @@
 extern int active;
 short *usage = NULL;    /* tracks which blocks are in use    */
 file_meta *file_metas = NULL;
-char descriptors[OPEN_FILES] = {-1};
+descriptor *descriptors = NULL;;
 
 /*File system management functions*/
 
@@ -81,16 +81,31 @@ int mount_fs(char* disk_name) {
     }
   }
 
+  /* initialize file descriptors */
+  descriptors = malloc(OPEN_FILES * sizeof(descriptor));
+  for(i = 0; i < OPEN_FILES; i++) {
+    descriptors[i].file = -1;
+    descriptors[i].cursor = 0;
+  }
+
   free(data);
   return 0;
 }
 
 int umount_fs(char* disk_name) {
+  int i = 0;
+  for(i = 0; i < OPEN_FILES; i++) {
+    if(descriptors[i].file != -1) {
+      return -1;
+    }
+  }
+  
   /*write last bit of stuff to it*/
 
   /* free the various structures */
   free(usage);
   free(file_metas);
+  free(descriptors);
 
   if(close_disk() == -1) {
     return -1;
@@ -115,8 +130,9 @@ int fs_open(char *name) {
   }
   if(file_num != -1) {
     for(i = 0; i < OPEN_FILES; i++) {
-      if(!descriptors[i]) {
-	descriptors[i] = file_num;
+      if(descriptors[i].file == -1) {
+	descriptors[i].file = file_num;
+	descriptors[i].cursor = 0;
 	return i;
       }
     }
@@ -126,9 +142,10 @@ int fs_open(char *name) {
 }
 
 int fs_close(int filedes) {
-  if(active == 0) {
+  if(active == 0 || descriptors[filedes].file == -1) {
     return -1;
   }
+  descriptors[filedes].file = -1;
   
   return 0;
 }

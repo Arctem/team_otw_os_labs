@@ -15,6 +15,10 @@ typedef struct file_meta_t {
   short size_last; /* how much of the last block is in use */
   short blocks[DISK_BLOCKS / 2];
 } file_meta;
+typedef struct descriptor_t {
+  char file;
+  int cursor;
+} descriptor;
 
 /******************************************************************************
  * File system structure:

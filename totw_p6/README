@@ -44,7 +44,8 @@ DIAGRAMS AND EXPLANATION
 
 TESTING PLAN / RESULTS
 ---------------------------------------------------------------------------------
-
+In order to test this, we have 'test.c'. 'test.c' will make different calls to
+the file system, such as reading, writing, opening, closing, etc.
 
 BUGS
 ------------------------------------------------------------------=--------------

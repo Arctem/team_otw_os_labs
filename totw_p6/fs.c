@@ -173,7 +173,7 @@ int fs_create(char *name) {
 }
 
 int fs_delete(char *name) {
-  int i = 0;
+  int i = 0, k = 0;
   
   if(active == 0) {
     return -1;
@@ -182,6 +182,9 @@ int fs_delete(char *name) {
   for(i = 0; i < NUM_FILES; i++) {
     if(file_metas[i].in_use) {
       file_metas[i].in_use = 0;
+      for(k = 0; k < file_metas[i].num_blocks; k++) {
+	usage[file_metas[i].blocks[k] - DISK_BLOCKS / 2] = 0;
+      }
       save_file_meta(i);
       return 0;
     }

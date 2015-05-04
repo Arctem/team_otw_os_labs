@@ -5,5 +5,6 @@
 #include "fs.h"
 
 int save_file_meta(int filenum);
+int find_empty_block();
 
 #endif

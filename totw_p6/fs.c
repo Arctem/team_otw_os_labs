@@ -199,11 +199,78 @@ int fs_read(int fildes, void *buf, size_t nbyte) {
 }
 
 int fs_write(int fildes, void *buf, size_t nbyte) {
+  int written = 0;
+  int dist;
+  int offset;
+  int block;
+  int newblock;
+  char *data = NULL;
+  descriptor *desc = NULL;
   if(active == 0) {
     return -1;
   }
 
-  return 0;
+  data = malloc(BLOCK_SIZE * sizeof(char));
+  desc = &descriptors[fildes];
+
+  /* write inside existing file */
+  while(desc->cursor < fs_get_filesize(fildes) && nbyte > 0) {
+    offset = desc->cursor % BLOCK_SIZE;
+    dist = BLOCK_SIZE - offset;
+    block = desc->cursor / BLOCK_SIZE;
+
+    block_read(file_metas[(int) desc->file].blocks[block], data);
+    memcpy(data + offset, buf, dist);
+    block_write(file_metas[(int) desc->file].blocks[block], data);
+    
+    written += dist;
+    nbyte -= dist;
+    buf += dist;
+    desc->cursor += dist;
+    if(desc->cursor > fs_get_filesize(fildes)) {
+      file_metas[(int) desc->file].size_last += dist;
+    }
+  }
+
+  /* write past former end */
+  while(nbyte > 0) {
+    if(file_metas[(int) desc->file].size_last == BLOCK_SIZE ||
+       file_metas[(int) desc->file].num_blocks == 0) {
+      /* expand into more blocks if needed */
+      newblock = find_empty_block();
+      if(newblock == -1) {
+	break;
+      }
+      int num_blocks = file_metas[(int) desc->file].num_blocks;
+      file_metas[(int) desc->file].blocks[num_blocks] = newblock + DISK_BLOCKS / 2;
+      file_metas[(int) desc->file].num_blocks++;
+      file_metas[(int) desc->file].size_last = 0;
+      usage[newblock] = 1;
+    }
+
+    offset = desc->cursor % BLOCK_SIZE;
+    dist = BLOCK_SIZE - offset;
+    if(nbyte < dist) {
+      dist = nbyte;
+    }
+    block = desc->cursor / BLOCK_SIZE;
+
+    block_read(file_metas[(int) desc->file].blocks[block], data);
+    memcpy(data + offset, buf, dist);
+    block_write(file_metas[(int) desc->file].blocks[block], data);
+
+    written += dist;
+    nbyte -= dist;
+    buf += dist;
+    desc->cursor += dist;
+
+    if(desc->cursor > fs_get_filesize(fildes)) {
+      file_metas[(int) desc->file].size_last += dist;
+    }
+  }
+  save_file_meta(desc->file);
+
+  return written;
 }
 
 int fs_get_filesize(int fildes) {

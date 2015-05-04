@@ -1,6 +1,7 @@
 #include "fsutil.h"
 
 extern int active;
+extern char *usage;
 extern file_meta *file_metas;
 
 int save_file_meta(int filenum) {
@@ -33,4 +34,18 @@ int save_file_meta(int filenum) {
   
   free(data);
   return 0;
+}
+
+int find_empty_block() {
+  int i = 0;
+  if(active == 0) {
+    return -1;
+  }
+
+  for(i = 0; i < DISK_BLOCKS / 2; i++) {
+    if(!usage[i]) {
+      return i;
+    }
+  }
+  return -1;
 }

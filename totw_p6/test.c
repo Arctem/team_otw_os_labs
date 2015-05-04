@@ -12,12 +12,15 @@ int main(int argc, char* argv[]) {
   f = fs_open("file.test");
   assert(f == 0);
   assert(fs_get_filesize(f) == 0);
+  assert(fs_write(f, (void*) "hello", 6) == 6);
+  assert(fs_get_filesize(f) == 6);
   assert(fs_close(f) == 0);
   assert(umount_fs("disk.dat") == 0);
 
   assert(mount_fs("disk.dat") == 0);
   f = fs_open("file.test");
-  assert(f != -1);
+  assert(f == 0);
+  assert(fs_get_filesize(f) == 6);
   assert(fs_close(f) == 0);
   assert(fs_delete("file.text") == 0);
   assert(fs_open("file.test") == -1);

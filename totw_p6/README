@@ -3,22 +3,48 @@ Andrew Baker
 Russell White
 
 INTRODUCTION
---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+The purpose of this project is to implement a virtual file system. This disk has
+8192 blocks of 4KB each, making the disk take up a total of 32MB. The file system
+supports at most 64 files, with files being no larger than 16MB.
 
 COMPILATION
---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+To build this program, simply run the provided Makefile by running 'make'.
 
 COMMAND EXPLANATION
---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+To run this program, run './test'. This will create the virtual file system on a
+'disk' named 'disk.dat'.
 
 DATA STRUCTURES
---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+We used some structures and implemented some functions for our virtual file
+system in order to work properly.
+
+block_map_t: A map of the blocks
+file_meta_t: File metadata
+block_list_t: A list of the blocks
+make_fs(): Make the file system
+mount_fs(): Mount the file system
+umount_fs(): Unmount the file system
+fs_open(): Open a file in the file system
+fs_close(): Close a file in the file system
+fs_create(): Create a file in the file system
+fs_delete(): Delete a file in the file system
+fs_read(): Read a file in the file system
+fs_write(): Write to a file in the file system
+fs_get_filesize(): Get the size of a file in the file system
+fs_lseek(): Set the file pointer to a specific point in the file
+fs_truncate(): Truncate the file to a specific length
 
 DIAGRAMS AND EXPLANATION
---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+
 
 TESTING PLAN / RESULTS
---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+
 
 BUGS
-------------------------------------------------------------------=-------------
+------------------------------------------------------------------=--------------

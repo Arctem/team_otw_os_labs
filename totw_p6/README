@@ -25,27 +25,33 @@ system in order to work properly.
 block_map_t: A map of the blocks
 file_meta_t: File metadata
 block_list_t: A list of the blocks
-make_fs(): Make the file system
-mount_fs(): Mount the file system
-umount_fs(): Unmount the file system
-fs_open(): Open a file in the file system
-fs_close(): Close a file in the file system
-fs_create(): Create a file in the file system
-fs_delete(): Delete a file in the file system
-fs_read(): Read a file in the file system
-fs_write(): Write to a file in the file system
-fs_get_filesize(): Get the size of a file in the file system
-fs_lseek(): Set the file pointer to a specific point in the file
-fs_truncate(): Truncate the file to a specific length
+make_fs(): Make the file system. Takes the name of a disk as input.
+mount_fs(): Mount the file system. Takes the name of a disk as input.
+umount_fs(): Unmount the file system. Takes the name of a disk as input.
+fs_open(): Open a file in the file system. Takes a file name as input.
+fs_close(): Close a file in the file system. Takes the file description as input.
+fs_create(): Create a file in the file system. Takes a file name as input.
+fs_delete(): Delete a file in the file system. Takes a file name as input.
+fs_read(): Read a file in the file system. Takes a file description, information
+as a void pointer, and the amount of data to read as input.
+fs_write(): Write to a file in the file system. Takes a file description,
+information as a void pointer, and the amount of data to write as input.
+fs_get_filesize(): Get the size of a file in the file system. Takes a file
+description as input.
+fs_lseek(): Set the file pointer to a specific point in the file. Takes a file
+description, and an offset as input.
+fs_truncate(): Truncate the file to a specific length. Takes a file description
+and length to truncate to as input.
 
 DIAGRAMS AND EXPLANATION
 ---------------------------------------------------------------------------------
-
+hexdump.png: A hex dump of the virtual disk created with our program.
 
 TESTING PLAN / RESULTS
 ---------------------------------------------------------------------------------
 In order to test this, we have 'test.c'. 'test.c' will make different calls to
-the file system, such as reading, writing, opening, closing, etc.
+the file system, such as mounting, reading, writing, opening, closing, etc.
 
 BUGS
 ------------------------------------------------------------------=--------------
+None that we are aware of.

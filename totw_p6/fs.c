@@ -207,11 +207,13 @@ int fs_write(int fildes, void *buf, size_t nbyte) {
 }
 
 int fs_get_filesize(int fildes) {
-  if(active == 0) {
+  if(active == 0 || descriptors[fildes].file == -1) {
     return -1;
   }
-
-  return 0;
+  file_meta f = file_metas[(int) descriptors[fildes].file];
+  if(f.num_blocks == 0)
+    return 0;
+  return (f.num_blocks - 1) * BLOCK_SIZE + f.size_last;
 }
 
 int fs_lseek(int fildes, off_t offset) {

@@ -11,6 +11,7 @@ int main(int argc, char* argv[]) {
   assert(fs_create("file.test") == 0);
   f = fs_open("file.test");
   assert(f == 0);
+  assert(fs_get_filesize(f) == 0);
   assert(fs_close(f) == 0);
   assert(umount_fs("disk.dat") == 0);
 

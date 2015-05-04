@@ -10,19 +10,15 @@
 /******************************************************************************/
 #define DISK_BLOCKS  8192      /* number of blocks on the disk                */
 #define BLOCK_SIZE   4096      /* block size on "disk"                        */
+#define NUM_FILES    64        /* the max allowed number of files on the disk */
 
-
-typedef struct block_map_t {
-  char block[BLOCK_SIZE];
-} block_map;
 typedef struct file_meta_t {
+  char in_use;
   char name[25]; /* name of the file, not null-terminated */
   short num_blocks; /* how many blocks the file uses */
   short size_last; /* how much of the last block is in use */
+  short blocks[DISK_BLOCKS / 2];
 } file_meta;
-typedef struct block_list_t {
-  short block[DISK_BLOCKS / 4];
-} block_list;
 
 /********************* PROVIDED FUNCTIONS *************************************/
 int make_disk(char *name);     /* create an empty, virtual disk file          */

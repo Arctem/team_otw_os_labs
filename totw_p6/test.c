@@ -4,7 +4,7 @@
 #include "fs.h"
 
 int main(int argc, char* argv[]) {
-  int f = 0;
+  int f = 0, f2 = 0;
   char test[100] = {0};
   
   assert(make_fs("disk.dat") == 0);
@@ -23,7 +23,13 @@ int main(int argc, char* argv[]) {
   assert(fs_lseek(f, 0) == 0);
   assert(fs_read(f, test, 10) == 6);
   assert(strncmp("hello", test, 6) == 0);
+
+  assert(fs_create("other.test") == 0);
+  f2 = fs_open("other.test");
+  assert(f2 == 1);
+  
   assert(fs_close(f) == 0);
+  assert(fs_close(f2) == 0);
   assert(umount_fs("disk.dat") == 0);
 
   memset(test, 0, 100);

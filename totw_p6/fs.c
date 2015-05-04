@@ -321,6 +321,7 @@ int fs_get_filesize(int fildes) {
   file_meta f = file_metas[(int) descriptors[fildes].file];
   if(f.num_blocks == 0)
     return 0;
+
   return (f.num_blocks - 1) * BLOCK_SIZE + f.size_last;
 }
 
@@ -335,9 +336,22 @@ int fs_lseek(int fildes, off_t offset) {
 }
 
 int fs_truncate(int fildes, off_t length) {
-  if(active == 0) {
+  if(active == 0 || descriptors[fildes].file == -1 ||
+     length > fs_get_filesize(fildes)) {
     return -1;
   }
 
+  file_meta *f = &file_metas[(int) descriptors[fildes].file];
+  int target_blocks = length / BLOCK_SIZE;
+  if(length % BLOCK_SIZE > 0) {
+    target_blocks++;
+  }
+  while(target_blocks < f->num_blocks) {
+    usage[f->blocks[f->num_blocks] - DISK_BLOCKS / 2] = 0;
+    f->num_blocks--;
+  }
+  f->size_last = length % BLOCK_SIZE;
+  save_file_meta(descriptors[fildes].file);
+  
   return 0;
 }

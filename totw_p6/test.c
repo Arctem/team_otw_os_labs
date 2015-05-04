@@ -18,6 +18,7 @@ int main(int argc, char* argv[]) {
   assert(fs_lseek(f, 100) == -1);
   assert(fs_lseek(f, 0) == 0);
   assert(fs_write(f, (void*) "hello", 6) == 6);
+  assert(fs_truncate(f, 1000000000) == -1);
   assert(fs_get_filesize(f) == 6);
   assert(fs_read(f, test, 10) == 0);
   assert(fs_lseek(f, 0) == 0);
@@ -40,6 +41,8 @@ int main(int argc, char* argv[]) {
   assert(fs_get_filesize(f) == 6);
   assert(fs_read(f, test, 10) == 6);
   assert(strncmp("hello", test, 6) == 0);
+  assert(fs_truncate(f, 3) == 0);
+  assert(fs_get_filesize(f) == 3);
   assert(fs_close(f) == 0);
   assert(fs_delete("file.text") == 0);
   assert(fs_open("file.test") == -1);

@@ -7,10 +7,11 @@
 
 #define NUM_FILES 64        /* the max allowed number of files on the disk */
 #define OPEN_FILES 32       /* the max allowed number of file descriptors */
+#define NAMELEN 15          /* the max length of a file name */
 
 typedef struct file_meta_t {
   char in_use;
-  char name[25]; /* name of the file, not null-terminated */
+  char name[NAMELEN]; /* name of the file, not null-terminated */
   short num_blocks; /* how many blocks the file uses */
   short size_last; /* how much of the last block is in use */
   short blocks[DISK_BLOCKS / 2];
@@ -36,7 +37,7 @@ typedef struct descriptor_t {
  * store the list of blocks used by that file.
  * The structure of the info block is as follows:
  * 1 byte containing either 0 (false) or 1 (true) representing if the file exists.
- * 25 bytes representing the file's name. Is null-terminated if under 25 characters long.
+ * 15 bytes representing the file's name. Is null-terminated if under 15 characters long.
  * A short of 2 bytes indicating how many blocks the file uses.
  * A short of 2 bytes indicating how much of the final block the file uses.
  *

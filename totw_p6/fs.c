@@ -60,9 +60,9 @@ int mount_fs(char* disk_name) {
     
     if(file_metas[i].in_use) {
       /* load other values if file exists */
-      memcpy(&file_metas[i].name, data + 1, 25);
-      file_metas[i].num_blocks = 256 * data[26] + data[27];
-      file_metas[i].size_last = 256 * data[28] + data[29];
+      memcpy(&file_metas[i].name, data + 1, NAMELEN);
+      file_metas[i].num_blocks = 256 * data[NAMELEN + 1] + data[NAMELEN + 2];
+      file_metas[i].size_last = 256 * data[NAMELEN + 3] + data[NAMELEN + 4];
       
       block_read(3*i + 2, data);
       for(k = 0; k < DISK_BLOCKS / 4; k++) {
@@ -123,7 +123,7 @@ int fs_open(char *name) {
 
   int file_num = -1;
   for(i = 0; i < NUM_FILES; i++) {
-    if(file_metas[i].in_use && strncmp(file_metas[i].name, name, 25)) {
+    if(file_metas[i].in_use && strncmp(file_metas[i].name, name, NAMELEN)) {
       file_num = i;
       break;
     }

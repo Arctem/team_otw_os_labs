@@ -194,11 +194,44 @@ int fs_delete(char *name) {
 }
 
 int fs_read(int fildes, void *buf, size_t nbyte) {
+  int read = 0;
+  int dist;
+  int offset;
+  int block;
+  char *data = NULL;
+  descriptor *desc = NULL;
   if(active == 0) {
     return -1;
   }
 
-  return 0;
+  data = malloc(BLOCK_SIZE * sizeof(char));
+  desc = &descriptors[fildes];
+
+  while(desc->cursor < fs_get_filesize(fildes) && nbyte > 0) {
+    offset = desc->cursor % BLOCK_SIZE;
+    dist = BLOCK_SIZE - offset;
+    if(fs_get_filesize(fildes) - desc->cursor < dist) {
+      dist = fs_get_filesize(fildes) - desc->cursor;
+      if(dist == 0) {
+	break;
+      }
+    }
+    if(nbyte < dist) {
+      dist = nbyte;
+    }
+
+    block = desc->cursor / BLOCK_SIZE;
+
+    block_read(file_metas[(int) desc->file].blocks[block], data);
+    memcpy(buf, data + offset, dist);
+    
+    read += dist;
+    nbyte -= dist;
+    buf += dist;
+    desc->cursor += dist;
+  }
+
+  return read;
 }
 
 int fs_write(int fildes, void *buf, size_t nbyte) {
@@ -220,8 +253,9 @@ int fs_write(int fildes, void *buf, size_t nbyte) {
   while(desc->cursor < fs_get_filesize(fildes) && nbyte > 0) {
     offset = desc->cursor % BLOCK_SIZE;
     dist = BLOCK_SIZE - offset;
-    if(nbyte < dist)
+    if(nbyte < dist) {
       dist = nbyte;
+    }
     block = desc->cursor / BLOCK_SIZE;
 
     block_read(file_metas[(int) desc->file].blocks[block], data);

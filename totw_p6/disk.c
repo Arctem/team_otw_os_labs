@@ -119,7 +119,6 @@ int block_read(int block, char *buf) {
 
 /*Make the file system*/
 int make_fs(char* disk_name) {
-  int disk = 0;
   int i = 0;
   char empty[BLOCK_SIZE] = {0};
 
@@ -128,8 +127,7 @@ int make_fs(char* disk_name) {
     return -1;
   }
 
-  disk = open_disk(disk_name);
-  if(disk == -1) {
+  if(open_disk(disk_name) == -1) {
     return -1;
   }
 
@@ -138,8 +136,7 @@ int make_fs(char* disk_name) {
     block_write(i, empty);
   }
 
-  disk = close_disk();
-  if(disk == -1) {
+  if(close_disk() == -1) {
     return -1;
   }
   
@@ -201,8 +198,7 @@ int mount_fs(char* disk_name) {
 int umount_fs(char* disk_name) {
   /*write last bit of stuff to it*/
 
-  int disk = close_disk();
-  if(disk == -1) {
+  if(close_disk() == -1) {
     return -1;
   }
 

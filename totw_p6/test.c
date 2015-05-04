@@ -18,6 +18,8 @@ int main(int argc, char* argv[]) {
   f = fs_open("file.test");
   assert(f != -1);
   assert(fs_close(f) == 0);
+  assert(fs_delete("file.text") == 0);
+  assert(fs_open("file.test") == -1);
   assert(umount_fs("disk.dat") == 0);
   return 0;
 }

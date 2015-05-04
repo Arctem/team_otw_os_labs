@@ -173,11 +173,21 @@ int fs_create(char *name) {
 }
 
 int fs_delete(char *name) {
+  int i = 0;
+  
   if(active == 0) {
     return -1;
   }
 
-  return 0;
+  for(i = 0; i < NUM_FILES; i++) {
+    if(file_metas[i].in_use) {
+      file_metas[i].in_use = 0;
+      save_file_meta(i);
+      return 0;
+    }
+  }
+
+  return -1;
 }
 
 int fs_read(int fildes, void *buf, size_t nbyte) {

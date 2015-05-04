@@ -10,7 +10,7 @@
 
 typedef struct file_meta_t {
   char in_use;
-  char name[15]; /* name of the file, not null-terminated */
+  char name[25]; /* name of the file, not null-terminated */
   short num_blocks; /* how many blocks the file uses */
   short size_last; /* how much of the last block is in use */
   short blocks[DISK_BLOCKS / 2];

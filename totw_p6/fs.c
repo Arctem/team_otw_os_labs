@@ -1,7 +1,7 @@
 #include "fs.h"
 
 extern int active;
-short *usage = NULL;    /* tracks which blocks are in use    */
+char *usage = NULL;    /* tracks which blocks are in use    */
 file_meta *file_metas = NULL;
 descriptor *descriptors = NULL;;
 
@@ -45,11 +45,10 @@ int mount_fs(char* disk_name) {
   data = malloc(BLOCK_SIZE * sizeof(char));
 
   /* load data about which blocks are in use */
-  usage = malloc(DISK_BLOCKS / 2 * sizeof(short));
+  usage = malloc(DISK_BLOCKS / 2 * sizeof(char));
   block_read(0, data);
   for(i = 0; i < DISK_BLOCKS / 2; i++) {
-    /* each value is stored in 2 bytes, so we need to parse that */
-    usage[i] = 256 * data[2*i] + data[2*i + 1];
+    usage[i] = data[i];
   }
 
   /* load each of the file meta data things */
@@ -60,6 +59,7 @@ int mount_fs(char* disk_name) {
     
     if(file_metas[i].in_use) {
       /* load other values if file exists */
+      /* each value is stored in 2 bytes, so we need to parse that */
       memcpy(&file_metas[i].name, data + 1, NAMELEN);
       file_metas[i].num_blocks = 256 * data[NAMELEN + 2] + data[NAMELEN + 3];
       file_metas[i].size_last = 256 * data[NAMELEN + 4] + data[NAMELEN + 5];

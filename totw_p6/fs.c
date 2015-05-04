@@ -270,6 +270,7 @@ int fs_write(int fildes, void *buf, size_t nbyte) {
   }
   save_file_meta(desc->file);
 
+  free(data);
   return written;
 }
 

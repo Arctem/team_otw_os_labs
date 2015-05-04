@@ -4,14 +4,17 @@ LINKOPTS = -Wall -g -ggdb -lpthread
 
 all: test
 
-test: test.c disk.o fs.o
-	$(CC) $(LINKOPTS) -o $@ test.c disk.o fs.o
+test: test.c disk.o fs.o fsutil.o
+	$(CC) $(LINKOPTS) -o $@ test.c disk.o fs.o fsutil.o
 
 disk.o: disk.c disk.h
 	$(CC) $(CCOPTS) -o $@ disk.c
 
 fs.o: fs.c fs.h
 	$(CC) $(CCOPTS) -o $@ fs.c
+
+fsutil.o: fsutil.c fsutil.h
+	$(CC) $(CCOPTS) -o $@ fsutil.c
 
 tar: totw_p6.tgz
 

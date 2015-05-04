@@ -61,8 +61,8 @@ int mount_fs(char* disk_name) {
     if(file_metas[i].in_use) {
       /* load other values if file exists */
       memcpy(&file_metas[i].name, data + 1, NAMELEN);
-      file_metas[i].num_blocks = 256 * data[NAMELEN + 1] + data[NAMELEN + 2];
-      file_metas[i].size_last = 256 * data[NAMELEN + 3] + data[NAMELEN + 4];
+      file_metas[i].num_blocks = 256 * data[NAMELEN + 2] + data[NAMELEN + 3];
+      file_metas[i].size_last = 256 * data[NAMELEN + 4] + data[NAMELEN + 5];
       
       block_read(3*i + 2, data);
       for(k = 0; k < DISK_BLOCKS / 4; k++) {
@@ -151,11 +151,24 @@ int fs_close(int filedes) {
 }
 
 int fs_create(char *name) {
+  int i = 0;
+  
   if(active == 0) {
     return -1;
   }
 
-  return 0;
+  for(i = 0; i < NUM_FILES; i++) {
+    if(!file_metas[i].in_use) {
+      file_metas[i].in_use = 1;
+      memcpy(file_metas[i].name, name, NAMELEN);
+      file_metas[i].num_blocks = 0;
+      file_metas[i].size_last = 0;
+      save_file_meta(i);
+      return 0;
+    }
+  }
+
+  return -1;
 }
 
 int fs_delete(char *name) {

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "disk.h"
+#include "fsutil.h"
 
 #define NUM_FILES 64        /* the max allowed number of files on the disk */
 #define OPEN_FILES 32       /* the max allowed number of file descriptors */

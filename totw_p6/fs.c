@@ -217,6 +217,8 @@ int fs_write(int fildes, void *buf, size_t nbyte) {
   while(desc->cursor < fs_get_filesize(fildes) && nbyte > 0) {
     offset = desc->cursor % BLOCK_SIZE;
     dist = BLOCK_SIZE - offset;
+    if(nbyte < dist)
+      dist = nbyte;
     block = desc->cursor / BLOCK_SIZE;
 
     block_read(file_metas[(int) desc->file].blocks[block], data);
@@ -285,9 +287,11 @@ int fs_get_filesize(int fildes) {
 }
 
 int fs_lseek(int fildes, off_t offset) {
-  if(active == 0) {
+  if(active == 0 || descriptors[fildes].file == -1 ||
+     offset < 0 || offset > fs_get_filesize(fildes)) {
     return -1;
   }
+  descriptors[fildes].cursor = offset;
 
   return 0;
 }

@@ -14,6 +14,10 @@ int main(int argc, char* argv[]) {
   assert(fs_get_filesize(f) == 0);
   assert(fs_write(f, (void*) "hello", 6) == 6);
   assert(fs_get_filesize(f) == 6);
+  assert(fs_lseek(f, 100) == -1);
+  assert(fs_lseek(f, 0) == 0);
+  assert(fs_write(f, (void*) "hello", 6) == 6);
+  assert(fs_get_filesize(f) == 6);
   assert(fs_close(f) == 0);
   assert(umount_fs("disk.dat") == 0);
 
